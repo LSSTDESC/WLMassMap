@@ -42,12 +42,23 @@ Consider variations with added information and complexity:
 
 Metrics
 ========
-M1 - RMS error in a selection of random points (suitably smoothed - healpix pixels)
-M2 - Peak/Trough/Void counts (as a function of smoothing scales?)
-M3 - RMS error on points that are masked out
-M4 - Some kind of peak ellipticity metric ??
-M5 - Power spectrum
-J1 - "Jet" award for best presentation/colour scheme.
+M1
+	RMS error in a selection of random points (suitably smoothed - healpix pixels)
+
+M2
+	Peak/Trough/Void counts (as a function of smoothing scales?)
+
+M3
+	RMS error on points that are masked out
+
+M4
+	Some kind of peak ellipticity metric ??
+
+M5
+	Power spectrum
+
+J1
+	"Jet" award for best presentation/colour scheme.
 
 
 Challenge variations
@@ -55,20 +66,34 @@ Challenge variations
 
 Challenge 1
 -----------
- No mask
- 2D reconstruction
+- No mask
+- 2D reconstruction
 
 Challenge 2
 -----------
-LSST mask
-Tomographic reconstruction (truth photo-z's?)
+- LSST mask
+- Tomographic reconstruction (truth photo-z's?)
 
 Challenge 3
 -----------
-No mask
-3D reconstruction
+- No mask
+- 3D reconstruction
 
 Challenge 4
 ------------
-LSST mask
-3D reconstruction
+- LSST mask
+- 3D reconstruction
+
+
+Timeline
+=====================
+
+====       ========
+Date       Activity
+====       ========
+2017-07-01 Distribute mock catalog v1; Begin coding metrics
+2017-07-11 Teams show some (non-quantitative) visualizations at the DESC collaboration meeting
+2017-09-15 ‘Challenge 1’ submission: Teams submit 2D convergence maps for metrics comparison
+2017-10-15 Group analysis of metrics results for Challenge 1 / revision of scope and plans for next challenges
+2017-11-15 Distribute mock catalog v2
+====       ====
