@@ -34,6 +34,9 @@ Challenge data sets
 Mira Titan Mocks octant at LSST density
 ---------------------------------------
 
+The mocks, made by Joachim Harnois-Deraps, are available in the project space on NERSC here:
+/project/projectdirs/lsst/desc-wl/wl-massmap/mira-titan
+
 Consider variations with added information and complexity:
 
 1. Shape noise and SNR noise added with secret values
