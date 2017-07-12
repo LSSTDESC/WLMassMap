@@ -12,6 +12,12 @@ While we expect exciting mass map results from this project, a primary aim is to
 
 See the [Issues](https://github.com/LSSTDESC/WLMassMap/issues) and [Milestones](https://github.com/LSSTDESC/WLMassMap/milestones) pages for further details on project activities.
 
+
+## Mocks
+
+See the doc/mocks directory for info on available mocks.
+
+
 ## People
 
 * Jim Bosch
