@@ -6,7 +6,7 @@
 For initial testing of mass mapping codes we will be using Mira-Titan mocks.
 They are simple enough that any strange things you see will be due to your mass mapping code.
 
-
+The shears are *not* reduced shears.  The RA and Dec are mis-labelled as being in arcmin but are actually in degrees.
 
 The raw mocks may be found on NERSC here:
 /project/projectdirs/lsst/desc-wl/wl-massmap/mira-titan/
