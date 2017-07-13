@@ -17,6 +17,25 @@ See the [Issues](https://github.com/LSSTDESC/WLMassMap/issues) and [Milestones](
 
 See the doc/mocks directory for info on available mocks.
 
+## HSC Data
+
+Erin put an example HSC MEDS file here:
+
+http://www.cosmo.bnl.gov/www/esheldon/hsc-meds-examples/
+
+and it has been copied here on NERSC:
+
+/project/projectdirs/lsst/desc-wl/wl-massmap/hsc/test-file/test-segrad5.fits.fz
+
+
+to read it, install fitsio if you don't have it already
+
+pip install fitsio
+Also install the meds reader. The meds library isn't in pip, so git clone it and install.
+https://github.com/esheldon/meds
+
+python setup.py install
+
 
 ## People
 
