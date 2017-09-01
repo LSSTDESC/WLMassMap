@@ -1,0 +1,44 @@
+# This demo config file illustrates how to setup a simulation
+
+# Input of the mock shape catalog
+shapes:
+  input:
+    # This input is based on the DESCQA generic catalog reader
+    type: GCR
+    # Which catalog to use
+    catalog: buzzard_v1.5.yaml
+
+  # Whether to use shear or reduced shear in the catalog
+  reduced_shear: true
+
+  # Type of noise to add to the shear components
+  noise:
+    # Simple Gaussian noise to start with
+    type: Gaussian
+    # Standard deviation of the noise
+    sigma: 0.2
+
+  # Photo-z model to apply to the true redshifts
+  photoz:
+    # Gaussian dispersion around true value
+    type: Gaussian
+    # Redshift dependent standard deviation
+    sigma: 0.1 # * (1+z)
+
+# Applies a mask to the catalog
+mask:
+  # Type of mask
+  type: HSC
+  # Type of HSC
+  subfield: HECTOMAP
+
+# Defines the properties of the output
+output:
+  # Output folder for the mock
+  dir: mock_output
+  file_name: demo1.hdf5
+
+  # Saves the ground truth required by the specified tests
+  ground_truth:
+    tests: l2diff
+    file_name: truth.hdf5
