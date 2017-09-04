@@ -16,7 +16,7 @@ See the [Issues](https://github.com/LSSTDESC/WLMassMap/issues) and [Milestones](
 
 Checking out the code and submodules:
 ```
- $ git clone --recursive git@github.com:EiffL/WLMassMap.git
+ $ git clone --recursive git@github.com:LSSTDESC/WLMassMap.git
 ```
 
 From bash
