@@ -1,0 +1,10 @@
+subclass_name: MiraTitanCatalog
+
+catalog_main_dir: /project/projectdirs/lsst/desc-wl/wl-massmap/mira-titan/inputs
+
+# Assuming M0000 cosmology
+cosmo_h: 0.71
+
+filename_template: 'MT_LSST_tomo{}_2.6GpAM_allz_ra_dec_e1_e2_w_z_lmax32768_interp_new.fits'
+
+creators: ['Joachim Harnois-Deraps']
