@@ -4,7 +4,6 @@ from GCR import BaseGalaxyCatalog, register_reader
 import os
 from astropy.cosmology import FlatLambdaCDM
 
-
 __all__ = ['MiraTitanCatalog']
 
 def _get_fits_data(fits_file):
@@ -57,4 +56,3 @@ class MiraTitanCatalog(BaseGalaxyCatalog):
 
 # Register reader
 register_reader(MiraTitanCatalog)
-

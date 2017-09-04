@@ -1,51 +1,62 @@
-from abc import ABCMeta, abstractmethod
-from astropy.extern import six
+from GCR import load_catalog
+import os
+import yaml
+from optparse import OptionParser
+from .MiraTitanCatalog import MiraTitanCatalog
 
-@six.add_metaclass(ABCMeta)
-class MockFactory(object):
+default_quantities = ['ra_true', 'dec_true', 'shear_1', 'shear_2',
+                      'redshift', 'redshift_photometric']
+
+def create_mock(config):
     """
-    Abstract base class for mock factories. Implementations of this class should
+    Extracts data from simulation and exports
 
+    Parameters
+    ----------
+        config: dictionary
+            Configuration dictionary read from yaml file
     """
+    # Load a catalog using the GCR and store whether to use shear
+    # or reduced shear
+    catalog = load_catalog(config['input']['catalog'])
 
-    __baseFields = ['galaxy_id',                        # Unique galaxy id
-                    'ra', 'ra_true',                    # Magnified and
-                    'dec', 'dec_true',                  # non Magnified coordinates
-                    'redshift',                         # Cosmological + motion
-                    'ellipticity_1', 'ellipticity_2',
-                    'ellipticity_1_true', 'ellipticity_2_true',
-                    'shear_1', 'shear_2', 'convergence',
-                    'reduced_shear_1', 'reduced_shear_2']
+    # Adds an 'observed shear' column, either shear or reduced shear
+    if config['reduced_shear']:
+        catalog.add_quantity_modifier('shear_1_obs', (lambda x, y: x/(1+y), 'shear_1', 'convergence'))
+        catalog.add_quantity_modifier('shear_2_obs', (lambda x, y: x/(1+y), 'shear_2', 'convergence'))
+    else:
+        catalog.add_quantity_modifier('shear_1_obs', 'shear_1')
+        catalog.add_quantity_modifier('shear_2_obs', 'shear_2')
 
-    def __init__(self, center=None):
-        """
-        Mock factory initialisation
+    # Adds shape noise
+    if 'shape_noise' in config:
+        if config['shape_noise']['type'] == 'Gaussian':
+            sigma = config['shape_noise']['sigma']
+            catalog.add_quantity_modifier('ellipticity_1_obs', (lambda x: x + sigma*randn(len(x)), 'shear_1_obs'))
+            catalog.add_quantity_modifier('ellipticity_2_obs', (lambda x: x + sigma*randn(len(x)), 'shear_2_obs'))
+        else
+            raise NotImplementedError
 
-        Parameters
-        ----------
-            center: tuple of float
-                (Ra, Dec) center of the survey
-        """
-        self.center = center
+    if 'photoz' in config:
+        if config['photoz']['type'] == 'Gaussian':
+            sigma = config['photoz']['sigma']
+            catalog.add_quantity_modifier('redshift_photometric', (lambda x: x + sigma * (1+x) *randn(len(x)), 'redshift'))
+        else
+            raise NotImplementedError
 
-    @abstractmethod
-    def _populate(self, **kwargs):
-        """
-        Generate galaxy positions and shapes, needs to be implemented for
-        specific providers
-        """
-        raise NotImplementedError("All subclasses of MockFactory"
-        " must include a _populate method")
+    # TODO: implement masking
 
-    def generate(self, **kwargs):
-        """
-        Generates a shape catalog, following the parameters of the model
+    # Exports the catalog in an HDF5 file
+    filename = os.path.join(config['output_directory'], config['output_filename'])
+    catalog.get_quantities(default_quantities, return_hdf5=filename)
 
-        Returns
-        -------
-        cat: Table
-            Realisation of the shape catalog.
-        """
 
-        # Sample galaxy positions and shapes
-        cat = self._populate()
+if __name__ == "__main__":
+
+    parser = OptionParser()
+    (options, args) = parser.parse_args()
+
+    with open(args[0]) as f:
+        config = yaml.load(f.read())
+
+    create_mock(config)
