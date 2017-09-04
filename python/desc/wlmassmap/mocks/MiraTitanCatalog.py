@@ -54,15 +54,10 @@ class MiraTitanCatalog(BaseGalaxyCatalog):
         for i in self._tomo_list:
             if pre_filters and not all(f[0](*([i]*(len(f)-1))) for f in pre_filters):
                 continue
-            try:
-                fp = fits.open(os.path.join(self._catalog_main_dir, self._filename_template.format(i)))
-            except (IOError, OSError):
-                pass
 
-            try:
-                yield i, fp
-            finally:
-                fp.close()
+            fp = fits.open(os.path.join(self._catalog_main_dir, self._filename_template.format(i)))
+            yield i, fp
+            fp.close()
 
     @staticmethod
     def _fetch_native_quantity(dataset, native_quantity):
