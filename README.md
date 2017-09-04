@@ -12,6 +12,20 @@ While we expect exciting mass map results from this project, a primary aim is to
 
 See the [Issues](https://github.com/LSSTDESC/WLMassMap/issues) and [Milestones](https://github.com/LSSTDESC/WLMassMap/milestones) pages for further details on project activities.
 
+## Code set-up and testing
+
+Checking out the code and submodules:
+```
+ $ git clone --recursive git@github.com:EiffL/WLMassMap.git
+```
+
+From bash
+```
+$ source <WLMassMap install directory>/setup/setup.sh
+$ nosetests <WLMassMap install directory>
+```
+
+
 
 ## Mocks
 
@@ -49,13 +63,6 @@ python setup.py install
 * Erin Sheldon
 * Anze Slosar
 * Joe Zuntz
-
-## Code set-up and testing
-From bash
-```
-$ source <WLMassMap install directory>/setup/setup.sh
-$ nosetests <WLMassMap install directory>
-```
 
 ## Demo
 
