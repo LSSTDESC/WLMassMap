@@ -1,7 +1,7 @@
 from astropy.table import Table
+from astropy.io import fits
 from GCR import BaseGalaxyCatalog, register_reader
 import os
-from astropy.io import fits
 from astropy.cosmology import FlatLambdaCDM
 
 
@@ -33,21 +33,12 @@ class MiraTitanCatalog(BaseGalaxyCatalog):
         self._nbins = nbins
         self._filename_template = filename_template
         self._catalog_main_dir = catalog_main_dir
-        self._tomo_list = list(range(self._nbins))
+        self._tomo_list = list(range(1,self._nbins+1))
 
 
     def _generate_native_quantity_list(self):
-        native_quantities = {'original_healpixel'}
-        for _, dataset in self._iter_native_dataset():
-            for k, v in dataset.items():
-                fields = _get_fits_data(v).dtype.fields
-                for name, (dt, size) in _get_fits_data(v).dtype.fields.items():
-                    if dt.shape:
-                        for i in range(dt.shape[0]):
-                            native_quantities.add((k, name, i))
-                    else:
-                        native_quantities.add((k, name))
-            break
+        with fits.open(os.path.join(self._catalog_main_dir, self._filename_template.format(1))) as d:
+            native_quantities = d[1].data.dtype.names
         return native_quantities
 
     def _iter_native_dataset(self, pre_filters=None):
@@ -55,15 +46,13 @@ class MiraTitanCatalog(BaseGalaxyCatalog):
             if pre_filters and not all(f[0](*([i]*(len(f)-1))) for f in pre_filters):
                 continue
 
-            fp = fits.open(os.path.join(self._catalog_main_dir, self._filename_template.format(i)))
+            fp = Table.read(os.path.join(self._catalog_main_dir, self._filename_template.format(i)))
             yield i, fp
-            fp.close()
 
     @staticmethod
     def _fetch_native_quantity(dataset, native_quantity):
-        fid, fits_data = dataset
-        data =  _get_fits_data(fits_data[native_quantity[0]])[native_quantity[1]]
-        return data
+        fid, data = dataset
+        return data[native_quantity]
 
 
 # Register reader
