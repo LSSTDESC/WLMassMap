@@ -19,7 +19,7 @@ class MiraTitanCatalog(BaseGalaxyCatalog):
             catalog_main_dir=os.curdir,
             cosmo_h=0.704,
             cosmo_Omega_M0=0.272,
-            filename_template:'MT_LSST_tomo{}.fits',
+            filename_template='MT_LSST_tomo{}.fits',
             nbins=10, **kwargs):
 
         self._quantity_modifiers ={
