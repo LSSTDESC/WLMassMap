@@ -1,5 +1,5 @@
 from astropy.table import Table
-from GCR import BaseGalaxyCatalog
+from GCR import BaseGalaxyCatalog, register_reader
 
 __all__ = ['MiraTitanCatalog']
 
@@ -8,7 +8,7 @@ class MiraTitanCatalog(BaseGalaxyCatalog):
     Mira Titan catalog reader for the DESCQA generic catalog reader
     """
 
-    def _subclass_init(self, filename, base_catalog_dir=os.curdir, **kwargs):
+    def _subclass_init(self, filename, **kwargs):
 
         self._quantity_modifiers ={
             'ra_true': 'ra_arcmin',
@@ -21,3 +21,7 @@ class MiraTitanCatalog(BaseGalaxyCatalog):
     @staticmethod
     def _fetch_native_quantity(dataset, native_quantity):
         return dataset[native_quantity].value
+
+# Register reader 
+register_reader(MiraTitanCatalog)
+
