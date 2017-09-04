@@ -5,6 +5,7 @@ from optparse import OptionParser
 from .MiraTitanCatalog import MiraTitanCatalog
 
 default_quantities = ['ra_true', 'dec_true', 'shear_1', 'shear_2',
+                      'ellipticity_1_obs', 'ellipticity_2_obs',
                       'redshift', 'redshift_photometric']
 
 def create_mock(config):
