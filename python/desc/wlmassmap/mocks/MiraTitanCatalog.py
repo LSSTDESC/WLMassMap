@@ -24,7 +24,7 @@ class MiraTitanCatalog(BaseGalaxyCatalog):
         self._quantity_modifiers ={
             'ra_true': 'ra_arcmin',
             'dec_true': 'dec_arcmin',
-            'redshift_true': 'z_spec',
+            'redshift': 'z_spec',
             'shear_1': 'shear1',
             'shear_2': 'shear2'
         }
