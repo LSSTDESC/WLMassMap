@@ -37,14 +37,14 @@ def create_mock(config):
             sigma = config['shape_noise']['sigma']
             catalog.add_quantity_modifier('ellipticity_1_obs', (lambda x: x + sigma*randn(len(x)), 'shear_1_obs'))
             catalog.add_quantity_modifier('ellipticity_2_obs', (lambda x: x + sigma*randn(len(x)), 'shear_2_obs'))
-        else
+        else:
             raise NotImplementedError
 
     if 'photoz' in config:
         if config['photoz']['type'] == 'Gaussian':
             sigma = config['photoz']['sigma']
             catalog.add_quantity_modifier('redshift_photometric', (lambda x: x + sigma * (1+x) *randn(len(x)), 'redshift'))
-        else
+        else:
             raise NotImplementedError
 
     if 'mask' in config:
@@ -53,7 +53,7 @@ def create_mock(config):
             dec_min, dec_max = config['mask']['dec_range']
             filters.append((lambda ra: (ra > ra_min) & (ra < ra_max), 'ra_true'))
             filters.append((lambda dec: (dec > dec_min) & (dec < dec_max), 'dec_true'))
-        else
+        else:
             raise NotImplementedError
 
     # Exports the catalog in an HDF5 file
