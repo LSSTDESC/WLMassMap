@@ -19,7 +19,7 @@ def create_mock(config):
     """
     # Load a catalog using the GCR and store whether to use shear
     # or reduced shear
-    catalog = load_catalog(config['input']['catalog'])
+    catalog = load_catalog(config['catalog'])
 
     filters = []
 
