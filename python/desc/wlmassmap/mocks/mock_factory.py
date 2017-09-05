@@ -21,6 +21,8 @@ def create_mock(config):
     # or reduced shear
     catalog = load_catalog(config['input']['catalog'])
 
+    filters = []
+
     # Adds an 'observed shear' column, either shear or reduced shear
     if config['reduced_shear']:
         catalog.add_quantity_modifier('shear_1_obs', (lambda x, y: x/(1+y), 'shear_1', 'convergence'))
@@ -45,7 +47,14 @@ def create_mock(config):
         else
             raise NotImplementedError
 
-    # TODO: implement masking
+    if 'mask' in config:
+        if config['mask']['type'] == 'patch':
+            ra_min, ra_max = config['mask']['ra_range']
+            dec_min, dec_max = config['mask']['dec_range']
+            filters.append((lambda ra: (ra > ra_min) & (ra < ra_max), 'ra_true'))
+            filters.append((lambda dec: (dec > dec_min) & (dec < dec_max), 'dec_true'))
+        else
+            raise NotImplementedError
 
     # Exports the catalog in an HDF5 file
     filename = os.path.join(config['output_directory'], config['output_filename'])

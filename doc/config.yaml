@@ -25,11 +25,11 @@ photoz:
   sigma: 0.1 # * (1+z)
 
 # Applies a mask to the catalog
-# mask:
-#   # Type of mask
-#   type: HSC
-#   # Type of HSC
-#   subfield: HECTOMAP
+mask:
+  # Type of mask
+  type: patch
+  ra_range:  [0, 10]
+  dec_range: [0, 10]
 
 # Output folder for the mock and ground truth catalogs
 output_directory: mock_output
