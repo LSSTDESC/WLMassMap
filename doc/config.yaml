@@ -1,0 +1,36 @@
+# This demo config file illustrates how to setup a simulation
+
+# DESCQA GCR catalog descriptor
+catalog: buzzard_v1.5.yaml
+
+# We could also apply some prefilters here if we want to limit the size of
+# the catalog
+# filters:
+
+# Whether to use shear or reduced shear in the catalog
+reduced_shear: true
+
+# Type of noise to add to the shear components
+shape_noise:
+  # Simple Gaussian noise to start with
+  type: Gaussian
+  # Standard deviation of the noise
+  sigma: 0.2
+
+# Photo-z model to apply to the true redshifts
+photoz:
+  # Gaussian dispersion around true value
+  type: Gaussian
+  # Redshift dependent standard deviation
+  sigma: 0.1 # * (1+z)
+
+# Applies a mask to the catalog
+mask:
+  # Type of mask
+  type: patch
+  ra_range:  [0, 10]
+  dec_range: [0, 10]
+
+# Output folder for the mock and ground truth catalogs
+output_directory: mock_output
+output_filename: demo.hdf5
