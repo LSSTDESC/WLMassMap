@@ -31,7 +31,7 @@ mock_observation:
     input_filename: ground_truth.hdf5
 
     # Whether to use shear or reduced shear [mandatory]
-    reduced_shear: true
+    reduced_shear: false
 
     # Type of shape noise to use
     # Here a simple Gaussian, but could also use the shapes provided in the
