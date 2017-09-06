@@ -22,18 +22,22 @@ class MiraTitanCatalog(BaseGalaxyCatalog):
             nbins=10, **kwargs):
 
         self._quantity_modifiers ={
+            'ra': 'ra_arcmin',
+            'dec': 'dec_arcmin',
             'ra_true': 'ra_arcmin',
             'dec_true': 'dec_arcmin',
             'redshift': 'z_spec',
             'shear_1': 'shear1',
-            'shear_2': 'shear2'
+            'shear_2': 'shear2',
+            'convergence': (lambda x: np.zeros_like(x), 'ra_arcmin'),
+            'galaxy_id': (lambda x: np.zeros_like(x), 'ra_arcmin'),
         }
 
         self._nbins = nbins
         self._filename_template = filename_template
         self._catalog_main_dir = catalog_main_dir
         self._tomo_list = list(range(1,self._nbins+1))
-
+        print("WARNING: Mira-Titan Catalog does not provide galaxy ids, magnification, or convergence, these fields will be set to 0")
 
     def _generate_native_quantity_list(self):
         with fits.open(os.path.join(self._catalog_main_dir, self._filename_template.format(1))) as d:
