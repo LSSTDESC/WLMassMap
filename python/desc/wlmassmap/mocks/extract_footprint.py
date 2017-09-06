@@ -45,7 +45,7 @@ def extract_footprint(config):
 
     # Exports the catalog in an HDF5 file
     filename = os.path.join(config['output_directory'], config['output_filename'])
-    catalog.get_quantities(required_quantities, return_hdf5=filename)
+    catalog.get_quantities(required_quantities, filters=filters, return_hdf5=filename)
 
 
 if __name__ == "__main__":
@@ -56,4 +56,4 @@ if __name__ == "__main__":
     with open(args[0]) as f:
         config = yaml.load(f.read())
 
-    create_mock(config['extract_footprint'])
+    extract_footprint(config['extract_footprint'])
