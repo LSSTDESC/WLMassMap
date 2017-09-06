@@ -1,36 +1,58 @@
 # This demo config file illustrates how to setup a simulation
 
-# DESCQA GCR catalog descriptor
-catalog: buzzard_v1.5.yaml
+# This first module extracts a shear catalog from the simulation
+extract_footprint:
 
-# We could also apply some prefilters here if we want to limit the size of
-# the catalog
-# filters:
+    # DESCQA GCR catalog descriptor
+    catalog: buzzard_v1.5.yaml
 
-# Whether to use shear or reduced shear in the catalog
-reduced_shear: true
+    # Type of footprint
+    # This is optional, if not provided, the entire simulation will be outputed
+    footprint:
+      type: patch
+      ra_range:  [0, 10]
+      dec_range: [0, 10]
 
-# Type of noise to add to the shear components
-shape_noise:
-  # Simple Gaussian noise to start with
-  type: Gaussian
-  # Standard deviation of the noise
-  sigma: 0.2
+    # Optionally, specify some truth fields to save beyond the default ones
+    # Default ones: ['galaxy_id', 'ra', 'dec', 'ra_true', 'dec_true', 'shear_1', 'shear_2', 'convergence', 'redshift']
+    export_quantities: []
 
-# Photo-z model to apply to the true redshifts
-photoz:
-  # Gaussian dispersion around true value
-  type: Gaussian
-  # Redshift dependent standard deviation
-  sigma: 0.1 # * (1+z)
+    # Output folder for the catalog
+    output_directory: mock_output
+    output_filename: ground_truth.hdf5
 
-# Applies a mask to the catalog
-mask:
-  # Type of mask
-  type: patch
-  ra_range:  [0, 10]
-  dec_range: [0, 10]
 
-# Output folder for the mock and ground truth catalogs
-output_directory: mock_output
-output_filename: demo.hdf5
+# This second module ingests the catalog generated above and
+# mocks some observations matching the output of a given shape measurement pipeline
+mock_observation:
+
+    # Pipe the input from above [mandatory]
+    input_directory: mock_output
+    input_filename: ground_truth.hdf5
+
+    # Whether to use shear or reduced shear [mandatory]
+    reduced_shear: true
+
+    # Type of shape noise to use
+    # Here a simple Gaussian, but could also use the shapes provided in the
+    # simulation [optional]
+    shape_noise:
+      # Simple Gaussian noise to start with
+      type: Gaussian
+      # Per component standard deviation of the noise
+      sigma: 0.13
+
+    # TODO: Add option for masking
+    # TODO: Add option for photo-z
+    # TODO: Add some mechanism to process the data in chunks or it wont fit in memory
+
+    # Could have several types of mocks, like im3shape and metacal
+    format:
+      type: metacal
+      # Shear responsivity used when mocking the measurement [optional]
+      R: [[1,0],[0,1]]
+      # Shear step used in finite differencing [optional]
+      delta_gamma: 0.01
+
+    output_directory: mock_output
+    output_filename: shape_catalog.fits
