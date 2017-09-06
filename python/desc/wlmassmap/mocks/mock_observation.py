@@ -6,7 +6,7 @@ import h5py
 import numpy as np
 from numpy.random import randn
 
-def metacal_format(catalog, e1, e2, g1, g2, R=np.diag([1,1]), delta_gamma=0.01):
+def metacal_format(catalog, e1, e2, g1, g2, R=np.diag([1,1]), delta_gamma=0.01, **kwargs):
     """
     Populate the catalog with metacal fields
 
@@ -74,7 +74,7 @@ def mock_observation(config):
         if config['shape_noise']['type'] == 'Gaussian':
             e1 = config['shape_noise']['sigma'] * randn(len(g1))
             e2 = config['shape_noise']['sigma'] * randn(len(g2))
-        else
+        else:
             raise NotImplementedError
 
     # Adds format specific catalog fields

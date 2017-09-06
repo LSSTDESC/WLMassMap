@@ -2,6 +2,7 @@ from astropy.table import Table
 from astropy.io import fits
 from GCR import BaseGalaxyCatalog, register_reader
 import os
+import numpy as np
 from astropy.cosmology import FlatLambdaCDM
 
 __all__ = ['MiraTitanCatalog']

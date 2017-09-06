@@ -4,14 +4,14 @@
 extract_footprint:
 
     # DESCQA GCR catalog descriptor
-    catalog: ../extern/generic-catalog-reader/catalogs/buzzard_v1.5.yaml
+    catalog: ../simulations/catalogs/mira_titan.yaml
 
     # Type of footprint
     # This is optional, if not provided, the entire simulation will be outputed
     footprint:
       type: patch
-      ra_range:  [0, 2]
-      dec_range: [0, 2]
+      ra_range:  [0, 5]
+      dec_range: [0, 5]
 
     # Optionally, specify some truth fields to save beyond the default ones
     # Default ones: ['galaxy_id', 'ra', 'dec', 'ra_true', 'dec_true', 'shear_1', 'shear_2', 'convergence', 'redshift']
