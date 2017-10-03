@@ -64,8 +64,8 @@ def shear_map(config):
     catalog = Table.read(filename)
 
     # Applies a first set of cuts
-    sel = (catalog['flags']==0) & (catalog['mcal_s2n_r'] > 10) & (catalog['mcal_T']/catalog['psfrec_T'] > 0.5)
-    catalog = catalog[sel]
+    #sel = (catalog['flags']==0) & (catalog['mcal_s2n_r'] > 10) & (catalog['mcal_T']/catalog['psfrec_T'] > 0.5)
+    #catalog = catalog[sel]
 
     # Computes calibrated shear
     catalog = add_metacal_shear(catalog)
