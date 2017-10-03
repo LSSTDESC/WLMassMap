@@ -27,12 +27,12 @@ Check the [configuration file](config.yaml) to see the kind of options that can 
 The shear_map.py module contains the code to apply the shear calibration,
 project and bin the catalog:
 ```
-$ python -m desc.wlmassmap.mocks.shear_map config_map.yaml
+$ python -m desc.wlmassmap.mocks.shear_map config.yaml
 ```
 
 The next step is to compute a convergence map:
 ```
-$ python -m desc.wlmassmap.mocks.convergence_map config_map.yaml
+$ python -m desc.wlmassmap.mocks.convergence_map config.yaml
 ```
 
 Check the [configuration file](config_map.yaml) to see the kind of options that can be set.
