@@ -1,5 +1,27 @@
 import numpy as np
 
+def eq2ang(ra, dec):
+    """
+    convert equatorial ra,dec in degrees to angular theta, phi in radians
+    parameters
+
+    ----------
+    ra: scalar or array
+        Right ascension in degrees
+    dec: scalar or array
+        Declination in degrees
+    returns
+    -------
+    theta,phi: tuple
+        theta = pi/2-dec*D2R # in [0,pi]
+        phi   = ra*D2R       # in [0,2*pi]
+    """
+    dec = dec*np.pi/180
+    ra  = ra*np.pi/180
+    theta = np.pi/2 - dec
+    phi  = ra
+    return theta, phi
+
 def radec2xy(ra0, dec0, ra, dec, radians=False):
     """
     Gnomonic projection of (ra, dec) coordinates to tangent plane about

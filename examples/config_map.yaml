@@ -1,19 +1,34 @@
 # This demo config file illustrates how to produce a mass map
 
-#
-# TODO: Add a module to apply cuts
-#
+
+# This module applies cuts to the input catalog
+selection:
+
+    # Input
+    input_directory: hsc_output
+    input_filename: tract008766-test-medsdm-dbcoadd-mcal-001.fits
+
+    # Specifies the cuts to apply
+    cuts:
+        - shape['flags'] == 0
+        - shape['mcal_s2n_r'] > 10
+        - (shape['mcal_T'] / shape['psfrec_T']) > 0.5
+
+    # Ouput
+    output_directory: hsc_output
+    output_filename: shape_catalog.fits
+
 
 # This first module computes a shear map from the provided shape catalog
 shear_map:
 
     # Input
-    input_directory: mock_output
+    input_directory: hsc_output
     input_filename: 'shape_catalog.fits'
 
     # Defines the projection to use (could also be HEALpix)
     projection:
-        type: 'Gnomonic'
+        type: 'gnomonic'
         center_ra: 35.7  # In deg
         center_dec: -3.7 # In deg
         pixel_size: 1 # In arcmin
@@ -21,13 +36,13 @@ shear_map:
         ny: 128
 
     # Output folder for the catalog
-    output_directory: mock_output
+    output_directory: hsc_output
     output_filename: shear_map.fits
 
 # The second module computes a convergence map from the input shear map
 convergence_map:
     # Input
-    input_directory: mock_output
+    input_directory: hsc_output
     input_filename: 'shear_map.fits'
 
     # Type and parameters of mass-mapping algorithm
@@ -36,5 +51,5 @@ convergence_map:
         # smoothing: 1 # Gaussian smoothing in arcmin
         # zero_padding: 128 # Size of the zero_padding region for inversion
 
-    output_directory: mock_output
+    output_directory: hsc_output
     output_filename: 'convergence_map.fits'

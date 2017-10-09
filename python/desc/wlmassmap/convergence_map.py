@@ -5,7 +5,7 @@ import yaml
 import numpy as np
 from astropy.io import fits
 
-from kaiser_squires import flat_KS_map
+from kaiser_squires import flat_KS_map, healpix_KS_map
 
 def convergence_map(config):
     """
@@ -16,9 +16,13 @@ def convergence_map(config):
 
     # Extracts the shear map
     gmap = fits.getdata(filename, 0)
+    c = config['algorithm']
 
-    if config['algorithm']['name'] == 'flat_ks':
+    if c['name'] == 'flat_ks':
         kappa_e, kappa_b = flat_KS_map(gmap)
+
+    elif c['name'] == 'healpix_ks':
+        kappa_e, kappa_b = healpix_KS_map(gmap, lmax=c['lmax'])
     else:
         raise NotImplementedError
 

@@ -1,16 +1,33 @@
 # This module handles the projection of a catalog on a specific grid
 import numpy as np
 from scipy.stats import binned_statistic_2d
-from projection_utils import radec2xy, xy2radec
+from projection_utils import radec2xy, xy2radec, eq2ang
+import healpy as hp
 
-# import healpy as hp
-# def project_healpix(catalog, nside, hp_type='RING'):
-#     """
-#     Adds a HEALpix pixel index to all galaxies in the catalog
-#     """
-#     theta, phi = ssht.ra_dec_to_theta_phi(ra_flip, dec, Degrees=True)
-#     catalog['pixel_index'] = hp.ang2pix(Nside,ssht.ra_dec_to_theta_phi(ra_flip, dec, Degrees=True))
-#     return catalog
+def project_healpix(catalog, nside, hp_type='RING'):
+    """
+    Adds a HEALpix pixel index to all galaxies in the catalog
+
+    Parameters
+    ----------
+    catalog: table
+        Input shape catalog
+
+    nside: int
+        HEALpix nside parameter
+
+    hp_type: string
+        HEALpix pixel order ('RING', 'NESTED')
+
+    Returns
+    -------
+    catalog: table
+        Output shape catalog with pixel index column
+    """
+    theta, phi = eq2ang(catalog['ra'], catalog['dec'])
+    catalog['pixel_index'] = hp.ang2pix(nside, theta, phi,
+                                        nest=(hp_type=='NESTED'))
+    return catalog
 
 def project_flat(catalog, nx, ny, pixel_size, center_ra, center_dec, projection='Gnomonic'):
     """
@@ -64,7 +81,7 @@ def project_flat(catalog, nx, ny, pixel_size, center_ra, center_dec, projection=
                                  0.5*(edges_y[1:] +edges_y[:-1]))
 
     # Computes projected coordinates on 2D plane
-    if projection == 'Gnomonic':
+    if projection == 'gnomonic':
         x,y = radec2xy(center_ra, center_dec, catalog['ra'], catalog['dec'])
         grid_ra, grid_dec = xy2radec(center_ra, center_dec,
                                      grid_x.flatten(), grid_y.flatten())
