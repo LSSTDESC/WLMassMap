@@ -29,7 +29,7 @@ def project_healpix(catalog, nside, hp_type='RING'):
                                         nest=(hp_type=='NESTED'))
     return catalog
 
-def project_flat(catalog, nx, ny, pixel_size, center_ra, center_dec, projection='Gnomonic'):
+def project_flat(catalog, nx, ny, pixel_size, center_ra, center_dec, projection='gnomonic'):
     """
     Adds a pixel index for a Gnomonic projected map. Pixels are indexed
     starting from 0 according to ind = y * nx + x
