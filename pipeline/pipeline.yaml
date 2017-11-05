@@ -1,0 +1,35 @@
+# Details of the overall pipeline
+pipeline:
+  # Location(s) where the code for the building images is kept.
+  # Needed because we need to examine the stages in the pipeline
+  images: [./pipeline/images]
+  stages:   [extract_footprint]
+  # Working directory:
+  owner:    eiffl
+  basename: descpipe-wlmassmap
+  version:  1.0
+  #Overall inputs to the whole pipeline.
+  #Keys are as used by the modules.
+
+
+# details of where the pipeline is to be run and where to get local inputs
+runtime:
+  launcher: local
+  working:   ./work
+  #Place to read configuration files for each stage
+  config:   ./pipeline/config
+  #Place to copy the outputs to:
+  output:   ./pipeline/output
+  # Pipeline details (determines the Docker image name)
+  # inputs:
+  #   shear-catalog: ./test/inputs/des-sv-ngmix-pipetest.fits
+  #   photoz-catalog: ./test/inputs/des-sv-annz-pipetest.fits
+
+
+# Stages in the pipeline
+
+# Put the objects into bins.
+extract_footprint:
+  depends-on: []
+  config:
+    config: extract_footprint.yaml
