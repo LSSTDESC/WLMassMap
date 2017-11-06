@@ -21,7 +21,7 @@ runtime:
   #Place to copy the outputs to:
   output:   ./pipeline/output
   # Pipeline details (determines the Docker image name)
-  # inputs:
+  inputs: {}
   #   shear-catalog: ./test/inputs/des-sv-ngmix-pipetest.fits
   #   photoz-catalog: ./test/inputs/des-sv-annz-pipetest.fits
 
