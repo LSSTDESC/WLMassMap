@@ -12,7 +12,7 @@ def convergence_map(config):
     Computes convergence map with specified algorithm
     """
 
-    filename = os.path.join(config['input_directory'], config['input_filename'])
+    filename = config['input_filename']
 
     # Extracts the shear map
     gmap = fits.getdata(filename, 0)
@@ -31,7 +31,7 @@ def convergence_map(config):
 
     hdulist = fits.HDUList([phdu, exthdu])
 
-    filename = os.path.join(config['output_directory'], config['output_filename'])
+    filename = config['output_filename']
     hdulist.writeto(filename)
 
 if __name__ == "__main__":

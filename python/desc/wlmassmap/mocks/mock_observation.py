@@ -52,7 +52,7 @@ def mock_observation(config):
     """
 
     # Open the input ground_truth catalog
-    filename = os.path.join(config['input_directory'], config['input_filename'])
+    filename = config['input_filename']
     cat_gt = h5py.File(filename, 'r')
 
     # Initialize catalog with mandatory fields
@@ -84,7 +84,7 @@ def mock_observation(config):
         raise NotImplementedError
 
     # Exports the catalog in an HDF5 file
-    filename = os.path.join(config['output_directory'], config['output_filename'])
+    filename = config['output_filename']
     catalog.write(filename, overwrite=True)
 
 

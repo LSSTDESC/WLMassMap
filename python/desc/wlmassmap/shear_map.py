@@ -91,7 +91,7 @@ def shear_map(config):
         config: dictionary
             Configuration dictionary read from yaml config file
     """
-    filename = os.path.join(config['input_directory'], config['input_filename'])
+    filename = config['input_filename']
     catalog = Table.read(filename)
 
     # Computes calibrated shear
@@ -134,7 +134,7 @@ def shear_map(config):
         hdulist = fits.HDUList([phdu, nhdu])
 
 
-    filename = os.path.join(config['output_directory'], config['output_filename'])
+    filename = config['output_filename']
     hdulist.writeto(filename)
 
 
