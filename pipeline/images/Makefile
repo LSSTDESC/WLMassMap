@@ -11,7 +11,7 @@ PULLS := $(STAGES:%=pull-%)
 ifdef NERSC_HOST
 	PULLCMD=shifterimg pull registry.services.nersc.gov/
 else
-	PULLCMD=docker pull
+	PULLCMD=docker pull 
 endif
 
 .DEFAULT_GOAL := all
