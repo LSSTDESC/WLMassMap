@@ -30,7 +30,7 @@ class Stage(descpipe.Stage):
         config = yaml.load(open(config_file))['mock_observation']
 
         # Overwriting configuration with pipeline output
-        config['input_filename'] = self.get_output_path("ground_truth")
+        config['input_filename'] = self.get_input_path("ground_truth")
         config['output_filename'] = self.get_output_path("shape_catalog")
 
         # Execute the code

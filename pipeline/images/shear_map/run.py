@@ -31,7 +31,7 @@ class Stage(descpipe.Stage):
         config = yaml.load(open(config_file))['shear_map']
 
         # Overwriting configuration with pipeline output
-        config['input_filename'] = self.get_output_path("shape_catalog")
+        config['input_filename'] = self.get_input_path("shape_catalog")
         config['output_filename'] = self.get_output_path("shear_map")
 
         # Execute the code
