@@ -1,5 +1,5 @@
-STAGES=extract_footprint
-OWNER=eiffl
+STAGES=extract_footprint mock_observation shear_map convergence_map
+OWNER=flanusse
 BASENAME=descpipe-wlmassmap
 VERSION=1.0
 
@@ -38,7 +38,8 @@ push:  $(PUSHES)
 pull: $(PULLS)
 
 $(PUSHES): build/.push-%: build/%.log
-	docker push ${OWNER}/${BASENAME}-$*:${VERSION}
+	docker tag ${OWNER}/${BASENAME}-$*:${VERSION} localhost:6000/${OWNER}/${BASENAME}-$*:${VERSION}
+	docker push localhost:6000/${OWNER}/${BASENAME}-$*:${VERSION}
 	touch build/.push-$*
 
 $(PULLS): pull-%:

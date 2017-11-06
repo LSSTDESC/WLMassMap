@@ -1,0 +1,14 @@
+shear_map:
+
+    # Defines the projection to use (could also be HEALpix)
+    projection:
+        type: 'healpix'
+        nside: 2048
+
+    # projection:
+        # type: 'gnomonic'
+        # center_ra: 2.5  # In deg
+        # center_dec: 2.5 # In deg
+        # pixel_size: 1 # In arcmin
+        # nx: 300
+        # ny: 300

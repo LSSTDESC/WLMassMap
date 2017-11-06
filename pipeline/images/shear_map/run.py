@@ -8,34 +8,34 @@ in this run program rather than calling another script.
 import descpipe
 
 class Stage(descpipe.Stage):
-    name = "extract_footprint"
+    name = "shear_map"
     config = {
         "config":"config.yaml"
     }
 
-    inputs = {}
+    inputs = {"shape_catalog":"fits"}
 
     outputs = {
-        "ground_truth": "hdf5",
+        "shear_map": "fits",
     }
 
 
     def run(self):
         # Imports must be in here
         import yaml
-        from desc.wlmassmap.mocks.extract_footprint import extract_footprint
+        from desc.wlmassmap.shear_map import shear_map
 
         config_file = self.get_config_path("config")
-        output_file = self.get_output_path("ground_truth")
 
         #Configuration options
-        config = yaml.load(open(config_file))['extract_footprint']
+        config = yaml.load(open(config_file))['shear_map']
 
         # Overwriting configuration with pipeline output
-        config['output_filename'] = output_file
-        print(config)
+        config['input_filename'] = self.get_output_path("shape_catalog")
+        config['output_filename'] = self.get_output_path("shear_map")
+
         # Execute the code
-        extract_footprint(config)
+        shear_map(config)
 
 
 # Always end with this

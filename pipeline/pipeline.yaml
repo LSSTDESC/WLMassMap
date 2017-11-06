@@ -3,9 +3,9 @@ pipeline:
   # Location(s) where the code for the building images is kept.
   # Needed because we need to examine the stages in the pipeline
   images: [./pipeline/images]
-  stages:   [extract_footprint]
+  stages:   [extract_footprint, mock_observation, shear_map, convergence_map]
   # Working directory:
-  owner:    eiffl
+  owner:    flanusse
   basename: descpipe-wlmassmap
   version:  1.0
   #Overall inputs to the whole pipeline.
@@ -33,3 +33,18 @@ extract_footprint:
   depends-on: []
   config:
     config: extract_footprint.yaml
+
+mock_observation:
+  depends-on: [extract_footprint]
+  config:
+    config: mock_observation.yaml
+
+shear_map:
+  depends-on: [mock_observation]
+  config:
+    config: shear_map.yaml
+
+convergence_map:
+  depends-on: [shear_map]
+  config:
+    config: convergence_map.yaml

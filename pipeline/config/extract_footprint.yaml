@@ -14,6 +14,3 @@ extract_footprint:
     # Optionally, specify some truth fields to save beyond the default ones
     # Default ones: ['galaxy_id', 'ra', 'dec', 'ra_true', 'dec_true', 'shear_1', 'shear_2', 'convergence', 'redshift']
     export_quantities: []
-
-    # Output folder for the catalog
-    output_filename: mock_output/ground_truth.hdf5
