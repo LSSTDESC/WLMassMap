@@ -9,7 +9,7 @@ PULLS := $(STAGES:%=pull-%)
 
 # Decide how to pull
 ifdef NERSC_HOST
-	PULLCMD=shifterimg pull localhost:6000/
+	PULLCMD=shifterimg pull registry.services.nersc.gov/
 else
 	PULLCMD=docker pull
 endif
