@@ -5,7 +5,7 @@ from optparse import OptionParser
 import os
 import yaml
 from numpy.linalg import pinv
-from projection import project_flat, project_healpix
+from .projection import project_flat, project_healpix
 from astropy.table import Table
 from astropy.io import fits
 import healpy as hp

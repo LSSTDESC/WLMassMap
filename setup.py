@@ -23,5 +23,5 @@ setup(
     ],
     package_dir={'': 'python'},
     packages=['desc.wlmassmap', 'desc.wlmassmap.mocks'],
-    install_requires=['numpy','h5py','astropy','GCR']
+    install_requires=['numpy','h5py','astropy','healpy','GCR']
 )

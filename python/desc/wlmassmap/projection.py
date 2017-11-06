@@ -1,7 +1,7 @@
 # This module handles the projection of a catalog on a specific grid
 import numpy as np
 from scipy.stats import binned_statistic_2d
-from projection_utils import radec2xy, xy2radec, eq2ang
+from .projection_utils import radec2xy, xy2radec, eq2ang
 import healpy as hp
 
 def project_healpix(catalog, nside, hp_type='RING'):

@@ -5,7 +5,7 @@ import yaml
 import numpy as np
 from astropy.io import fits
 
-from kaiser_squires import flat_KS_map, healpix_KS_map
+from .kaiser_squires import flat_KS_map, healpix_KS_map
 
 def convergence_map(config):
     """
