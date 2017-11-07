@@ -14,17 +14,17 @@ See the [Issues](https://github.com/LSSTDESC/WLMassMap/issues) and [Milestones](
 
 ## Code set-up and testing
 
-Checking out the code and submodules:
+Checking out the code:
 ```
- $ git clone --recursive git@github.com:LSSTDESC/WLMassMap.git
-```
-
-From bash
-```
-$ source <WLMassMap install directory>/setup/setup.sh
-$ nosetests <WLMassMap install directory>
+ $ git clone git@github.com:LSSTDESC/WLMassMap.git
 ```
 
+Or, install code and dependencies with pip:
+```
+$ pip install --user git+git://github.com/LSSTDESC/WLMassMap
+```
+
+See [examples](https://github.com/LSSTDESC/WLMassMap/tree/master/examples) for instructions on how to use the code
 
 
 ## Mocks
