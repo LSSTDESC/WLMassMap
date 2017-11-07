@@ -1,0 +1,12 @@
+# This module computes a convergence map from the input shear map
+convergence_map:
+
+    # Type and parameters of mass-mapping algorithm
+    algorithm:
+        name: 'healpix_ks'
+        lmax: 4096
+        sigma: 5 # Gaussian smoothing applied to map in arcmin
+    # algorithm:
+        #name: 'flat_ks'
+        # smoothing: 1 # Gaussian smoothing in arcmin
+        # zero_padding: 128 # Size of the zero_padding region for inversion

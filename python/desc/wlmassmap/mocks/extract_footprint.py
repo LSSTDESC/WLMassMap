@@ -1,10 +1,9 @@
 # This module extracts from the simulation source a given footprint will all
 # fields required for downstream analysis
-from GCR import load_catalog
+from GCRCatalogs import load_catalog
 import os
 import yaml
 from optparse import OptionParser
-from .MiraTitanCatalog import MiraTitanCatalog
 
 required_quantities = ['galaxy_id', 'ra', 'dec',
                        'ra_true', 'dec_true',
@@ -44,7 +43,7 @@ def extract_footprint(config):
             raise NotImplementedError
 
     # Exports the catalog in an HDF5 file
-    filename = os.path.join(config['output_directory'], config['output_filename'])
+    filename = config['output_filename']
     catalog.get_quantities(required_quantities, filters=filters, return_hdf5=filename)
 
 
