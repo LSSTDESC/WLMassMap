@@ -21,7 +21,7 @@ Checking out the code:
 
 Or, install code and dependencies with pip:
 ```
-$ pip install --user git+git://github.com/LSSTDESC/WLMassMap
+$ pip install --user git+git://github.com/LSSTDESC/WLMassMap.git
 ```
 
 See [examples](https://github.com/LSSTDESC/WLMassMap/tree/master/examples) for instructions on how to use the code
