@@ -18,8 +18,7 @@ extract_footprint:
     export_quantities: []
 
     # Output folder for the catalog
-    output_directory: mock_output
-    output_filename: ground_truth.hdf5
+    output_filename: mock_output/ground_truth.hdf5
 
 
 # This second module ingests the catalog generated above and
@@ -27,8 +26,7 @@ extract_footprint:
 mock_observation:
 
     # Pipe the input from above [mandatory]
-    input_directory: mock_output
-    input_filename: ground_truth.hdf5
+    input_filename:  mock_output/ground_truth.hdf5
 
     # Whether to use shear or reduced shear [mandatory]
     reduced_shear: false
@@ -54,15 +52,13 @@ mock_observation:
       # Shear step used in finite differencing [optional]
       delta_gamma: 0.01
 
-    output_directory: mock_output
-    output_filename: shape_catalog.fits
+    output_filename: mock_output/shape_catalog.fits
 
 # This module bins the shape catalog and applies the required calibration
 shear_map:
 
     # Input
-    input_directory: mock_output
-    input_filename: shape_catalog_selected.fits
+    input_filename: mock_output/shape_catalog_selected.fits
 
     # Defines the projection to use (could also be HEALpix)
     projection:
@@ -78,15 +74,13 @@ shear_map:
         # ny: 300
 
     # Output folder for the catalog
-    output_directory: mock_output
-    output_filename: shear_map.fits
+    output_filename: mock_output/shear_map.fits
 
 # This module computes a convergence map from the input shear map
 convergence_map:
 
     # Input
-    input_directory: mock_output
-    input_filename: shear_map.fits
+    input_filename: mock_output/shear_map.fits
 
     # Type and parameters of mass-mapping algorithm
     algorithm:
@@ -98,5 +92,4 @@ convergence_map:
         # smoothing: 1 # Gaussian smoothing in arcmin
         # zero_padding: 128 # Size of the zero_padding region for inversion
 
-    output_directory: mock_output
-    output_filename: 'convergence_map.fits'
+    output_filename: mock_output/convergence_map.fits
