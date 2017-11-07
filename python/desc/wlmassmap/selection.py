@@ -13,7 +13,7 @@ def selection(config):
     Applies a series of cuts to the input catalog
     """
 
-    filename = os.path.join(config['input_directory'], config['input_filename'])
+    filename = config['input_filename']
     shape = Table.read(filename)
     mask = np.ones(len(shape)).astype('bool')
 
@@ -23,7 +23,7 @@ def selection(config):
     shape = shape[mask]
 
     # Exports the catalog in
-    filename = os.path.join(config['output_directory'], config['output_filename'])
+    filename = config['output_filename']
     shape.write(filename, overwrite=True)
 
 if __name__ == "__main__":
