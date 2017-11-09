@@ -1,0 +1,81 @@
+# This demo config file illustrates how to produce a mass map
+
+
+# This module applies cuts to the input catalog
+selection:
+
+    # Input
+    input_filename: hsc_output/t008766.fits
+
+    # Specifies the cuts to apply
+    cuts:
+        - shape['flags'] == 0
+        - shape['mcal_s2n_r'] > 10
+        - (shape['mcal_T'] / shape['psfrec_T']) > 0.5
+
+    # Ouput
+    output_filename: hsc_output/shape_catalog.fits
+
+# This first module computes a shear map from the provided shape catalog
+shear_map:
+
+    # Input
+    input_filename: hsc_output/shape_catalog.fits
+
+    # Defines the projection to use (could also be HEALpix)
+
+    #projection:
+     #   type: 'ssht_mw'
+      #  L: 512.0
+
+    projection:
+        type: 'ssht_hp'
+        Nside: 2048
+
+       
+    #projection:
+     #   type: 'gnomonic'
+      #  center_ra: 35.7  # In deg
+       # center_dec: -3.7 # In deg
+        #pixel_size: 1 # In arcmin
+        #nx: 128
+        #ny: 128
+
+
+    # Output folder for the catalog
+    output_filename: hsc_output/shear_map_hp.fits
+
+# The second module computes a convergence map from the input shear map
+convergence_map:
+    # Input
+    input_filename: hsc_output/shear_map_hp.fits
+
+    # Type and parameters of mass-mapping algorithm
+    #algorithm:
+     #   name: 'healpix_ks'
+      #  lmax: 2048
+       # sigma: 5 # Gaussian smoothing applied to map in arcmin
+
+    #algorithm:
+     #   name: 'SKS_mw'
+      #  L: 512.0     #make sure this is not int or it will conflict with the sigma calculation
+      #  Iterate: False
+       # return_count: False
+        #fwhm_arcmins: 2  #make sure this is not int or it will conflict with the sigma calculation
+
+    algorithm:
+        name: 'SKS_hp'
+        Convert_to_MW_pixels: True
+        L: 4096    #make sure this is not int or it will conflict with the sigma calculation
+        nside: 2048
+        Iterate: False
+        return_count: False
+        fwhm_arcmins: 4 #make sure this is not int or it will conflict with the sigma calculation
+
+
+    #algorithm:
+    #    name: 'flat_ks'
+        # smoothing: 1 # Gaussian smoothing in arcmin
+        # zero_padding: 128 # Size of the zero_padding region for inversion
+
+    output_filename: hsc_output/convergence_map_hp.fits

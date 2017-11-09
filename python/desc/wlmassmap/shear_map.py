@@ -5,10 +5,12 @@ from optparse import OptionParser
 import os
 import yaml
 from numpy.linalg import pinv
-from .projection import project_flat, project_healpix
+from projection import project_flat, project_healpix
+from projection import project_ssht_mw, project_ssht_hp
 from astropy.table import Table
 from astropy.io import fits
 import healpy as hp
+import pyssht as ssht
 
 def add_metacal_shear(catalog, delta_gamma=0.01):
     """
@@ -116,6 +118,13 @@ def shear_map(config):
 
         # Bins the projected catalog
         gmap, nmap = bin_shear_map(catalog, npix=hp.nside2npix(c['nside']))
+
+    elif c['type'] == 'ssht_mw': # Any spherical projection
+        gmap, nmap = project_ssht_mw(catalog, L_mw=c['L'])
+
+    elif c['type'] == 'ssht_hp': # Any spherical projection
+        gmap, nmap = project_ssht_hp(catalog, Nside=c['Nside'])
+
     else:
         raise NotImplementedError
 

@@ -1,8 +1,9 @@
 # This module handles the projection of a catalog on a specific grid
 import numpy as np
 from scipy.stats import binned_statistic_2d
-from .projection_utils import radec2xy, xy2radec, eq2ang
+from projection_utils import radec2xy, xy2radec, eq2ang
 import healpy as hp
+import pyssht as ssht
 
 def project_healpix(catalog, nside, hp_type='RING'):
     """
@@ -28,6 +29,73 @@ def project_healpix(catalog, nside, hp_type='RING'):
     catalog['pixel_index'] = hp.ang2pix(nside, theta, phi,
                                         nest=(hp_type=='NESTED'))
     return catalog
+
+
+def project_ssht_mw(catalog, L_mw, Method='MW'):
+    g1 = np.zeros(ssht.sample_shape(L_mw,Method='MW'))
+    g2 = np.zeros(ssht.sample_shape(L_mw,Method='MW'))
+    shear_g1 = np.zeros(ssht.sample_shape(L_mw,Method='MW'))
+    shear_g2 = np.zeros(ssht.sample_shape(L_mw,Method='MW'))
+    Ngal = np.zeros(ssht.sample_shape(L_mw,Method='MW'))
+
+    theta,phi=ssht.ra_dec_to_theta_phi(catalog['ra'],catalog['dec'],Degrees=True)
+    for i in range(theta.size):
+        pix_i = ssht.theta_to_index(theta[i],L_mw,Method='MW')
+        pix_j = ssht.phi_to_index(phi[i],L_mw,Method='MW')
+        shear_g1[pix_i,pix_j] += catalog['g'][i][0]
+        shear_g2[pix_i,pix_j] += catalog['g'][i][1]
+        Ngal[pix_i,pix_j] += 1
+
+    #if there are greater than n_min galaxies in the box. weight the shear response.
+    #if not, replace the estimate for that pixel to nan.
+    for pix_i in range(shear_g1.shape[0]):
+        for pix_j in range(shear_g1.shape[1]):
+            if Ngal[pix_i][pix_j] != 0.0:
+                g1[pix_i][pix_j] = shear_g1[pix_i][pix_j] / Ngal[pix_i][pix_j]
+                g2[pix_i][pix_j] = shear_g2[pix_i][pix_j] / Ngal[pix_i][pix_j]
+
+            else:
+                g1[pix_i][pix_j] = np.nan
+                g2[pix_i][pix_j] = np.nan
+
+    gmap = np.stack([g1,g2], axis=0)
+
+    return gmap, Ngal 
+
+def project_ssht_hp(catalog,Nside):
+    
+    theta, phi = ssht.ra_dec_to_theta_phi(catalog['ra'],catalog['dec'],Degrees=True)
+    Npix = hp.nside2npix(Nside)
+    pixnum = hp.ang2pix(Nside,theta,phi)   # for healpix specifically
+    e1map_hp = np.zeros(Npix)
+    e2map_hp = np.zeros(Npix)
+    Ngal_hp = np.zeros(Npix)
+    #mask_hp = np.full((Npix,),np.nan)
+
+    for i in range(pixnum.size):
+        pix=pixnum[i]
+        e1map_hp[pix] += catalog['g'][i][0]
+        e2map_hp[pix] += catalog['g'][i][1]
+        Ngal_hp[pix] += 1.0
+        #mask_hp[pix] = 1.0
+
+    for i in range(Npix):
+        if Ngal_hp[i]!=0.0:
+            e1map_hp[i] = e1map_hp[i] / Ngal_hp[i]
+            e2map_hp[i] = e2map_hp[i] / Ngal_hp[i]
+
+    else:
+        e1map_hp[i]=hp.UNSEEN
+        e2map_hp[i]=hp.UNSEEN
+
+    e1map_hp[e1map_hp!=hp.UNSEEN] = e1map_hp[e1map_hp!=hp.UNSEEN]*(-1)
+    e2map_hp[e2map_hp!=hp.UNSEEN] = e2map_hp[e2map_hp!=hp.UNSEEN]*(-1)
+
+    gmap = np.stack([e1map_hp,e2map_hp], axis=0)
+
+    return gmap, Ngal_hp
+
+
 
 def project_flat(catalog, nx, ny, pixel_size, center_ra, center_dec, projection='gnomonic'):
     """
