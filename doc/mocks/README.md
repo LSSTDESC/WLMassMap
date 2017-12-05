@@ -9,10 +9,10 @@ They are simple enough that any strange things you see will be due to your mass 
 The shears are *not* reduced shears.  The RA and Dec are mis-labelled as being in arcmin but are actually in degrees.
 
 The raw mocks may be found on NERSC here:
-/project/projectdirs/lsst/desc-wl/wl-massmap/mira-titan/
+/global/projecta/projectdirs/lsst/groups/WL/projects/wl-massmap/mira-titan/
 
 and a version with simplistic shape noise added:
-/project/projectdirs/lsst/desc-wl/wl-massmap/mira-titan/v1
+/global/projecta/projectdirs/lsst/groups/WL/projects/wl-massmap/mira-titan/v1
 
 
 
