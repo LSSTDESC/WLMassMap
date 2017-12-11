@@ -5,9 +5,8 @@ import yaml
 import numpy as np
 from astropy.io import fits
 import pyssht as ssht
-import cy_DES_utils as DES 
-import cy_mass_mapping as mm 
-import cy_healpy_mass_mapping as hp_mm 
+import massmappy.cy_mass_mapping as mm
+import massmappy.cy_healpy_mass_mapping as hp_mm
 import healpy as hp
 
 from kaiser_squires import flat_KS_map, healpix_KS_map
@@ -43,7 +42,7 @@ def convergence_map(config):
         gmap2 = gmap[1].astype('<f8')
 
         kappa_e, kappa_b = hp_mm.reduced_shear_to_kappa_hp(gmap1, gmap2, L=c['L'], Nside=c['nside'], sigma=(np.pi/(60.*180.*2.355))*(c['fwhm_arcmins']/c['L']), Iterate=c['Iterate'])
-        
+
         if c['Convert_to_MW_pixels'] is True:
             alm_E_hp    = hp.map2alm(kappa_e, lmax=c['L']-1)
             alm_B_hp    = hp.map2alm(kappa_b, lmax=c['L']-1)
@@ -53,7 +52,6 @@ def convergence_map(config):
 
             kappa_e = ssht.inverse(alm_E_hp_mw, c['L'], Reality=True)
             kappa_b = ssht.inverse(alm_B_hp_mw, c['L'], Reality=True)
-
 
     else:
         raise NotImplementedError

@@ -9,8 +9,6 @@ from astropy.table import Table
 from astropy.io import fits
 import fitsio
 
-start = time.time()
-
 def selection(config):
     """
     Applies a series of cuts to the input catalog
@@ -36,6 +34,8 @@ def selection(config):
 
 if __name__ == "__main__":
 
+    start = time.time()
+
     parser = OptionParser()
     (options, args) = parser.parse_args()
 
@@ -44,5 +44,5 @@ if __name__ == "__main__":
 
     selection(config['selection'])
 
-end = time.time()
-print end-start
+    end = time.time()
+    print end-start

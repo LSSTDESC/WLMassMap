@@ -32,7 +32,7 @@ shear_map:
         type: 'ssht_hp'
         Nside: 2048
 
-       
+
     #projection:
      #   type: 'gnomonic'
       #  center_ra: 35.7  # In deg
