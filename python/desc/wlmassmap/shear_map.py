@@ -6,7 +6,7 @@ import os
 import yaml
 from numpy.linalg import pinv
 from projection import project_flat, project_healpix
-from projection import project_ssht_mw, project_ssht_hp
+from projection import project_ssht_mw
 from astropy.table import Table
 from astropy.io import fits
 import healpy as hp
@@ -120,8 +120,8 @@ def shear_map(config):
         gmap, nmap = bin_shear_map(catalog, npix=hp.nside2npix(c['nside']))
 
     elif c['type'] == 'ssht_mw':
-        catalog = project_ssht_mw(catalog, Lmax=c['Lmax'])
-        shape = ssht.sample_shape(Lmax, Method='MW')
+        catalog = project_ssht_mw(catalog, L=c['L'])
+        shape = ssht.sample_shape(L=c['L'], Method='MW')
 
         # Bins the projected catalog
         gmap, nmap = bin_shear_map(catalog, nx=shape[0], ny=shape[1])

@@ -30,10 +30,10 @@ def project_healpix(catalog, nside, hp_type='RING'):
                                         nest=(hp_type=='NESTED'))
     return catalog
 
-def project_ssht_mw(catalog, L, Method='MW'):
+def project_ssht_mw(catalog, L):
     """
     Adds a MW pixel index to all galaxies in the catalog based on
-    ind = phi * n_theta + theta
+    ind = theta * n_phi + phi
 
     Parameters
     ----------
@@ -52,12 +52,17 @@ def project_ssht_mw(catalog, L, Method='MW'):
         Output shape catalog with pixel index column
     """
     theta, phi=ssht.ra_dec_to_theta_phi(catalog['ra'],catalog['dec'],Degrees=True)
-    t = ssht.theta_to_index(theta, L, Method=Method)
-    p = ssht.phi_to_index(phi, L, Method=Method)
+    # Account for negative values of phi
+    phi = (phi + 2.*np.pi) % (2.*np.pi)
 
-    n_theta, n_phi = ssht.sample_shape(L, Method=Method)
+    # Computes theta and phi index for the MW grid
+    # based on https://github.com/astro-informatics/ssht/blob/ed3d64fb3d34c6773712dec7c5007a5f3a03d560/src/python/pyssht.pyx#L690
+    # But with a much faster/convenient numpy implementation
+    t = ((theta*(2*L-1)/np.pi-1)/2).astype('int64')
+    p = (phi*(2*L-1)/(2*np.pi)).astype('int64')
+    n_theta, n_phi = ssht.sample_shape(L, Method="MW")
 
-    pixel_index = p*n_theta + t
+    pixel_index = t*n_phi + p
 
     catalog['pixel_index'] = pixel_index
 
