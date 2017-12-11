@@ -113,17 +113,18 @@ def shear_map(config):
         # Bins the projected catalog
         gmap, nmap = bin_shear_map(catalog, nx=c['nx'], ny=c['ny'])
 
-    elif c['type'] == 'healpix': # Any spherical projection
+    elif c['type'] == 'healpix':
         catalog = project_healpix(catalog, nside=c['nside'])
 
         # Bins the projected catalog
         gmap, nmap = bin_shear_map(catalog, npix=hp.nside2npix(c['nside']))
 
-    elif c['type'] == 'ssht_mw': # Any spherical projection
-        gmap, nmap = project_ssht_mw(catalog, L_mw=c['L'])
+    elif c['type'] == 'ssht_mw':
+        catalog = project_ssht_mw(catalog, Lmax=c['Lmax'])
+        shape = ssht.sample_shape(Lmax, Method='MW')
 
-    elif c['type'] == 'ssht_hp': # Any spherical projection
-        gmap, nmap = project_ssht_hp(catalog, Nside=c['Nside'])
+        # Bins the projected catalog
+        gmap, nmap = bin_shear_map(catalog, nx=shape[0], ny=shape[1])
 
     else:
         raise NotImplementedError

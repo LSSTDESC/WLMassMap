@@ -26,13 +26,13 @@ shear_map:
 
     #projection:
      #   type: 'ssht_mw'
-      #  L: 512.0
+      #  Lmax: 512.0
 
     projection:
         type: 'ssht_hp'
         Nside: 2048
 
-       
+
     #projection:
      #   type: 'gnomonic'
       #  center_ra: 35.7  # In deg
