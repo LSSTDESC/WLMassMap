@@ -26,7 +26,7 @@ shear_map:
 
     #projection:
      #   type: 'ssht_mw'
-      #  Lmax: 512.0
+      #  L: 512.0
 
     projection:
         type: 'ssht_hp'
