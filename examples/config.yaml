@@ -4,8 +4,7 @@
 extract_footprint:
 
     # DESCQA GCR catalog descriptor
-    catalog: protoDC2
-    #proto-dc2_v2.0
+    catalog: proto-dc2_v2.0
 
     # Type of footprint
     # This is optional, if not provided, the entire simulation will be outputed
@@ -59,7 +58,7 @@ mock_observation:
 shear_map:
 
     # Input
-    input_filename: mock_output/shape_catalog.fits
+    input_filename: mock_output/shape_catalog_selected.fits
 
     # Defines the projection to use (could also be HEALpix)
     projection:
