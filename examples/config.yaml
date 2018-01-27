@@ -58,7 +58,7 @@ mock_observation:
 shear_map:
 
     # Input
-    input_filename: mock_output/shape_catalog_selected.fits
+    input_filename: mock_output/shape_catalog.fits
 
     # Defines the projection to use (could also be HEALpix)
     projection:
