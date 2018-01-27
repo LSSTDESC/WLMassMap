@@ -4,7 +4,7 @@
 extract_footprint:
 
     # DESCQA GCR catalog descriptor
-    catalog: proto-dc2_v2.0
+    catalog: protoDC2
 
     # Type of footprint
     # This is optional, if not provided, the entire simulation will be outputed
