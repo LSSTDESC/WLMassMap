@@ -53,7 +53,7 @@ def mock_observation(config):
 
     # Open the input ground_truth catalog
     filename = config['input_filename']
-    cat_gt = h5py.File(filename, 'r')
+    cat_gt = h5py.File(filename, 'r')["WLMassMap_data"]
 
     # Initialize catalog with mandatory fields
     catalog = Table([cat_gt['galaxy_id'][...], cat_gt['ra'][...], cat_gt['dec'][...]],

@@ -4,6 +4,7 @@ from GCRCatalogs import load_catalog
 import os
 import yaml
 from optparse import OptionParser
+import astropy.table as table
 
 required_quantities = ['galaxy_id', 'ra', 'dec',
                        'ra_true', 'dec_true',
@@ -44,8 +45,9 @@ def extract_footprint(config):
 
     # Exports the catalog in an HDF5 file
     filename = config['output_filename']
-    catalog.get_quantities(required_quantities, filters=filters, return_hdf5=filename)
-
+    quantitites = catalog.get_quantities(required_quantities, filters=filters)
+    outdict = table.Table(catalog.get_quantities(required_quantities, filters=filters))
+    outdict.write(filename,path="WLMassMap_data")
 
 if __name__ == "__main__":
 
