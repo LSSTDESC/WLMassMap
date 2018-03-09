@@ -1,0 +1,87 @@
+# This demo config file illustrates how to setup a simulation
+
+# This first module extracts a shear catalog from the simulation
+extract_footprint:
+
+    # DESCQA GCR catalog descriptor
+    catalog: protoDC2
+
+    # Type of footprint
+    # This is optional, if not provided, the entire simulation will be outputed
+    #footprint:
+    #  type: patch
+    #  ra_range:  [0, 5]
+    #  dec_range: [0, 5]
+
+    # Optionally, specify some truth fields to save beyond the default ones
+    # Default ones: ['galaxy_id', 'ra', 'dec', 'ra_true', 'dec_true', 'shear_1', 'shear_2', 'convergence', 'redshift']
+    export_quantities: []
+
+    # Output folder for the catalog
+    output_filename: mock_output/ground_truth.hdf5
+
+
+# This second module ingests the catalog generated above and
+# mocks some observations matching the output of a given shape measurement pipeline
+mock_observation:
+
+    # Pipe the input from above [mandatory]
+    input_filename:  mock_output/ground_truth.hdf5
+
+    # Whether to use shear or reduced shear [mandatory]
+    reduced_shear: false
+
+    # Type of shape noise to use
+    # Here a simple Gaussian, but could also use the shapes provided in the
+    # simulation [optional]
+    shape_noise:
+      # Simple Gaussian noise to start with
+      type: Gaussian
+      # Per component standard deviation of the noise
+      sigma: 0.13
+
+    # TODO: Add option for masking
+    # TODO: Add option for photo-z
+    # TODO: Add some mechanism to process the data in chunks or it wont fit in memory
+
+    # Could have several types of mocks, like im3shape and metacal
+    format:
+      type: metacal
+      # Shear responsivity used when mocking the measurement [optional]
+      R: [[1,0],[0,1]]
+      # Shear step used in finite differencing [optional]
+      delta_gamma: 0.01
+
+    output_filename: mock_output/shape_catalog.fits
+
+# This module bins the shape catalog and applies the required calibration
+shear_map:
+
+    # Input
+    input_filename: mock_output/shape_catalog.fits
+
+    # Defines the projection to use (could also be HEALpix)
+    projection:
+        type: 'gnomonic'
+        center_ra: 2.5  # In deg
+        center_dec: 2.5 # In deg
+        pixel_size: 1 # In arcmin
+        nx: 300
+        ny: 300
+
+    # Output folder for the catalog
+    output_filename: mock_output/shear_map.fits
+
+# This module computes a convergence map from the input shear map
+convergence_map:
+
+    # Input
+    input_filename: mock_output/shear_map.fits
+
+    # Type and parameters of mass-mapping algorithm
+    algorithm:
+        name: 'flat_ks'
+        smoothing: 1 # Gaussian smoothing in arcmin
+        zero_padding: 128 # Size of the zero_padding region for inversion
+
+    output_filename: mock_output/convergence_map.fits
