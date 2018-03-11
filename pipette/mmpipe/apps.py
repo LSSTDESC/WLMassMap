@@ -9,7 +9,7 @@ class extractFootprintPipe(PipelineStage):
 
     config_options = {'gcr_catalog':'proto-dc2_v2.0',
                       'footprint':{
-                        'type':'patch'
+                        'type':'patch',
                         'ra_range': [0,5],
                         'dec_range': [0,5]}}
 
