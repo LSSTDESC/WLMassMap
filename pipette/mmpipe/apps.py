@@ -41,3 +41,7 @@ class mockShearMeasurementPipe(PipelineStage):
         config['input_filename'] = self.get_input('truth_catalog')
         config['output_filename'] = self.get_output('shear_catalog')
         mock_observation(config)
+
+
+if __name__ == '__main__':
+    cls = PipelineStage.main()
