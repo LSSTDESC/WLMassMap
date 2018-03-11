@@ -63,3 +63,4 @@ target/
 
 # Backup files
 *~
+.ropeproject/
