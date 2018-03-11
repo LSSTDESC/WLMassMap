@@ -4,7 +4,7 @@ from .dtypes import ShearCatFile
 from desc.wlmassmap.mocks import extract_footprint, mock_observation
 
 class extractFootprintPipe(PipelineStage):
-    name = 'extract_footprint'
+    name = 'extractFootprintPipe'
     inputs = []
     outputs = [('truth_catalog', HDF5File)]
 
