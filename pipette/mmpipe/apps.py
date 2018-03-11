@@ -6,7 +6,7 @@ from desc.wlmassmap.mocks import extract_footprint, mock_observation
 class extractFootprintPipe(PipelineStage):
     name = 'extract_footprint'
     inputs = []
-    outputs = [('truth_catalog', HDF5File)]
+    outputs = [('truth_catalog', HDFFile)]
 
     config_options = {'gcr_catalog':'proto-dc2_v2.0',
                       'footprint':{
@@ -22,7 +22,7 @@ class extractFootprintPipe(PipelineStage):
 
 class mockShearMeasurementPipe(PipelineStage):
     name = 'mockShearMeasurementPipe'
-    inputs = [('truth_catalog', HDF5File)]
+    inputs = [('truth_catalog', HDFFile)]
     outputs = [('shear_catalog', ShearCatFile)]
     config_options = {'reduced_shear':True,
                       'shape_noise':{
