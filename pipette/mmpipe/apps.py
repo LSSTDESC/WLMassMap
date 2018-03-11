@@ -1,5 +1,6 @@
 from pipette import PipelineStage
-from pipette.dtypes import ShearCatFile, HDF5File
+from pipette.types import HDFFile
+from .dtypes import ShearCatFile
 from desc.wlmassmap.mocks import extract_footprint, mock_observation
 
 class extractFootprintPipe(PipelineStage):
