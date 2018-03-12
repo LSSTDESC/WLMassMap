@@ -20,7 +20,7 @@ stages:
 output_dir: ./outputs
 
 inputs:
-    config: test/config.yml
+    config: config.yml
 resume: False
 log_dir: ./test/logs
 pipeline_log: log.txt
