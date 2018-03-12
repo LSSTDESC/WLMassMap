@@ -1,14 +1,15 @@
 from pipette import PipelineStage
-from pipette.types import HDFFile
+from pipette.types import HDFFile, YamlFile
 from .dtypes import ShearCatFile
-from desc.wlmassmap.mocks import extract_footprint, mock_observation
+from desc.wlmassmap.mocks.extract_footprint import extract_footprint
+from desc.wlmassmap.mocks.mock_observation import mock_observation 
 
 class extractFootprintPipe(PipelineStage):
     name = 'extractFootprintPipe'
-    inputs = []
+    inputs = [('config', YamlFile)]
     outputs = [('truth_catalog', HDFFile)]
 
-    config_options = {'gcr_catalog':'proto-dc2_v2.0',
+    config_options = {'catalog':'proto-dc2_v2.0',
                       'footprint':{
                         'type':'patch',
                         'ra_range': [0,5],
@@ -22,7 +23,7 @@ class extractFootprintPipe(PipelineStage):
 
 class mockShearMeasurementPipe(PipelineStage):
     name = 'mockShearMeasurementPipe'
-    inputs = [('truth_catalog', HDFFile)]
+    inputs = [('config', YamlFile), ('truth_catalog', HDFFile)]
     outputs = [('shear_catalog', ShearCatFile)]
     config_options = {'reduced_shear':True,
                       'shape_noise':{

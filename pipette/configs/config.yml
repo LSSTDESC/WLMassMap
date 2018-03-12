@@ -1,0 +1,5 @@
+extractFootprintPipe:
+  catalog: protoDC2
+
+mockShearMeasurementPipe:
+  reduced_shear: True
