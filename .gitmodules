@@ -1,3 +1,0 @@
-[submodule "extern/generic-catalog-reader"]
-	path = extern/generic-catalog-reader
-	url = https://github.com/LSSTDESC/generic-catalog-reader.git
