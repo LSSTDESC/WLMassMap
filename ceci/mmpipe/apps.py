@@ -1,9 +1,10 @@
 from ceci import PipelineStage
 from descformats import HDFFile, YamlFile, FitsFile
-from descformats.tx import MetacalCatalog
+from descformats.tx import MetacalCatalog, TomographyCatalog
 from desc.wlmassmap.mocks.extract_footprint import extract_footprint
 from desc.wlmassmap.mocks.mock_observation import mock_observation
 from desc.wlmassmap.shear_map import shear_map
+from desc.wlmassmap.convergence_map import convergence_map
 
 class extractFootprintPipe(PipelineStage):
     name = 'extractFootprintPipe'
@@ -75,7 +76,7 @@ class convergenceMapPipe(PipelineStage):
         config = self.read_config()
         config['input_filename'] = self.get_input('shear_map')
         config['output_filename'] = self.get_output('converenge_map')
-        config['algorithm'] = {'type':'flat_ks',
+        config['algorithm'] = {'name':'flat_ks',
                                 'smoothing':config['smoothing'],
                                 'zero_padding':config['zero_padding']}
         convergence_map(config)

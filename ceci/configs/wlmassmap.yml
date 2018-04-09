@@ -20,6 +20,10 @@ stages:
       nprocess: 1
     - name: TXPhotozPDF
       nprocess: 1
+    - name: shearMapPipe
+      nprocess: 1
+    - name: convergenceMapPipe
+      nprocess: 1
 
 output_dir: ./outputs
 
