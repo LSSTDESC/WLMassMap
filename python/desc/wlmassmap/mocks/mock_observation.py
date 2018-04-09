@@ -39,6 +39,24 @@ def metacal_format(catalog, e1, e2, g1, g2, R=np.diag([1,1]), delta_gamma=0.01, 
     catalog['mcal_g_2p'] = np.stack([e1, e2], axis=1) + np.dot(R, np.stack([g1, g2 + delta_gamma], axis=1).T).T
     catalog['mcal_g_2m'] = np.stack([e1, e2], axis=1) + np.dot(R, np.stack([g1, g2 - delta_gamma], axis=1).T).T
 
+    # TODO: Add realist entries for the rest of the catalog
+    # These are columns
+    metacal_columns = [
+        'mcal_g_cov',  'mcal_pars',  'mcal_pars_cov',
+        'mcal_T', 'mcal_T_err', 'mcal_T_r', 'mcal_s2n_r']
+
+    for c in metacal_columns:
+        catalog[c] = 1.
+        catalog[c+'_1p'] = 1.
+        catalog[c+'_1m'] = 1.
+        catalog[c+'_2p'] = 1.
+        catalog[c+'_2m'] = 1.
+
+    other_columns = ['mcal_flux_cov', 'mcal_weight', 'mcal_flux',
+        'mcal_flux_s2n', 'mcal_mag', 'mcal_gpsf', 'mcal_logsb', 'mcal_Tpsf']
+
+    for c in other_columns:
+        catalog[c] = 1.
 
 def mock_observation(config):
     """
