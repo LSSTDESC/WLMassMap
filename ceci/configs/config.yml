@@ -4,16 +4,16 @@ extractFootprintPipe:
 mockShearMeasurementPipe:
   reduced_shear: True
   sigma_noise: 0.
-  delta_gamma: 0.02
+  delta_gamma: 0.01
 
 TXPhotozPDF:
   zmax: 1.5
   nz: 32
-  
+
 TXSelector:
   T_cut: 0.1
   s2n_cut: 0.1
-  delta_gamma: 0.02
+  delta_gamma: 0.01
   zbin_edges: [0.0, 2.0]
 
 shearMapPipe:

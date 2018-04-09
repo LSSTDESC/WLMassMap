@@ -37,7 +37,7 @@ class mockShearMeasurementPipe(PipelineStage):
         config['input_filename'] = self.get_input('truth_catalog')
         config['output_filename'] = self.get_output('shear_catalog')
         config['shape_noise'] = {'type':'Gaussian', 'sigma':config['sigma_noise']}
-        config['format'] = {'type':'metacal', 'R':[[1,0],[1,0]],
+        config['format'] = {'type':'metacal', 'R':[[1,0],[0,1]],
                             'delta_gamma':config['delta_gamma']}
         mock_observation(config)
 
