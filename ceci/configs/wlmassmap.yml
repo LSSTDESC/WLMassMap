@@ -9,12 +9,16 @@ launcher:
     }
       site: Local_Threads
 
-modules: mmpipe.apps
+modules:
+    - mmpipe
+    - txpipe
 
 stages:
     - name: extractFootprintPipe
       nprocess: 1
     - name: mockShearMeasurementPipe
+      nprocess: 1
+    - name: TXSelector
       nprocess: 1
 
 output_dir: ./outputs
