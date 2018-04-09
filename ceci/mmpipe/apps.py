@@ -1,5 +1,6 @@
 from ceci import PipelineStage
-from descformats import MetacalCatalog, HDFFile, YamlFile
+from descformats import HDFFile, YamlFile
+from descformats.tx import MetacalCatalog
 from desc.wlmassmap.mocks.extract_footprint import extract_footprint
 from desc.wlmassmap.mocks.mock_observation import mock_observation
 

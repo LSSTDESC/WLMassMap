@@ -47,7 +47,7 @@ def extract_footprint(config):
     filename = config['output_filename']
     quantitites = catalog.get_quantities(required_quantities, filters=filters)
     outdict = table.Table(catalog.get_quantities(required_quantities, filters=filters))
-    outdict.write(filename,path="WLMassMap_data")
+    outdict.write(filename,path="WLMassMap_data",format='hdf5')
 
 if __name__ == "__main__":
 

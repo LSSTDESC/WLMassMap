@@ -3,3 +3,9 @@ extractFootprintPipe:
 
 mockShearMeasurementPipe:
   reduced_shear: True
+  sigma_noise: 0.12
+
+TXPhotozPDF:
+  zmax: 1.5
+  nz: 32
+  

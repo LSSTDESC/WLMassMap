@@ -9,9 +9,7 @@ launcher:
     }
       site: Local_Threads
 
-modules:
-    - mmpipe
-    - txpipe
+modules: mmpipe txpipe
 
 stages:
     - name: extractFootprintPipe
@@ -20,11 +18,13 @@ stages:
       nprocess: 1
     - name: TXSelector
       nprocess: 1
+    - name: TXPhotozPDF
+      nprocess: 1
 
 output_dir: ./outputs
 
 inputs:
     config: configs/config.yml
-resume: False
+resume: True
 log_dir: ./test/logs
 pipeline_log: log.txt
