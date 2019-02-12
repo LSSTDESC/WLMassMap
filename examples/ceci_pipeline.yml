@@ -1,13 +1,4 @@
-launcher:
-    globals: {lazyErrors: true}
-    sites:
-    - auth: {channel: null}
-      execution: {
-        executor: threads,
-        maxThreads: 4,
-        provider: null
-    }
-      site: Local_Threads
+launcher: cori-interactive
 
 modules: mmpipe txpipe
 
