@@ -1,0 +1,34 @@
+launcher:
+    globals: {lazyErrors: true}
+    sites:
+    - auth: {channel: null}
+      execution: {
+        executor: threads,
+        maxThreads: 4,
+        provider: null
+    }
+      site: Local_Threads
+
+modules: mmpipe txpipe
+
+stages:
+    - name: extractFootprintPipe
+      nprocess: 1
+    - name: mockShearMeasurementPipe
+      nprocess: 1
+    - name: TXSelector
+      nprocess: 1
+    - name: TXPhotozPDF
+      nprocess: 1
+    - name: shearMapPipe
+      nprocess: 1
+    - name: convergenceMapPipe
+      nprocess: 1
+
+output_dir: ./outputs
+
+inputs:
+    config: configs/config.yml
+resume: True
+log_dir: ./test/logs
+pipeline_log: log.txt
