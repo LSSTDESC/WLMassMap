@@ -1,0 +1,43 @@
+# This module builds mock metacalibration catalogs from DC2 data
+TXProtoDC2Mock:
+    cat_name: cosmoDC2_v1.0
+
+# This module bins the shape catalog and applies the required calibration
+shear_map:
+
+    # Input
+    input_filename: mock_output/shape_catalog.fits
+
+    # Defines the projection to use (could also be HEALpix)
+    projection:
+        type: 'healpix'
+        nside: 2048
+
+    # projection:
+        # type: 'gnomonic'
+        # center_ra: 2.5  # In deg
+        # center_dec: 2.5 # In deg
+        # pixel_size: 1 # In arcmin
+        # nx: 300
+        # ny: 300
+
+    # Output folder for the catalog
+    output_filename: mock_output/shear_map.fits
+
+# This module computes a convergence map from the input shear map
+convergence_map:
+
+    # Input
+    input_filename: mock_output/shear_map.fits
+
+    # Type and parameters of mass-mapping algorithm
+    algorithm:
+        name: 'healpix_ks'
+        lmax: 4096
+        sigma: 5 # Gaussian smoothing applied to map in arcmin
+    # algorithm:
+        #name: 'flat_ks'
+        # smoothing: 1 # Gaussian smoothing in arcmin
+        # zero_padding: 128 # Size of the zero_padding region for inversion
+
+    output_filename: mock_output/convergence_map.fits
