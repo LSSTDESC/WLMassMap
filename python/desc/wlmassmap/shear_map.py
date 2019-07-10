@@ -82,6 +82,39 @@ def bin_shear_map(catalog, nx=None, ny=None, npix=None):
 
     return gmap, Nmap
 
+import h5py
+def read_table_hdf5_fix(filename, group):
+    f = h5py.File(filename,'r')
+    g = f[group]
+    
+    # load each dataset as a separate column in astropy Tablee
+    dtype_list = [(key, g[key].dtype) for key in g.keys()]
+    catalog = np.empty(g['ra'].shape, dtype=dtype_list)
+
+    for key in g.keys():
+        catalog[key] = g[key]
+    
+    catalog = Table(catalog)
+    
+    # check that the relevant fields are not nan
+    mask = np.array([True]*len(catalog))
+
+    for key in ['mcal_'+g+h for g in ['g1_','g2_'] for h in ['1p','1m','2p','2m']]:
+        mask &= ~np.isnan(catalog[key])
+
+    catalog = catalog[mask]
+    
+    # construct shear measurements in wlmm format
+    catalog['mcal_g_1p'] = np.stack([catalog['mcal_g1_1p'],catalog['mcal_g2_1p']], axis=1)
+    catalog['mcal_g_2p'] = np.stack([catalog['mcal_g1_2p'],catalog['mcal_g2_2p']], axis=1)
+    catalog['mcal_g_1m'] = np.stack([catalog['mcal_g1_1m'],catalog['mcal_g2_1m']], axis=1)
+    catalog['mcal_g_2m'] = np.stack([catalog['mcal_g1_2m'],catalog['mcal_g2_2m']], axis=1)
+    catalog['mcal_g'] = np.stack([catalog['mcal_g1'],catalog['mcal_g2']], axis=1)
+    
+    f.close()
+    
+    return catalog
+
 def shear_map(config):
     """
     Builds a shear map from a given shape catalog
@@ -92,7 +125,11 @@ def shear_map(config):
             Configuration dictionary read from yaml config file
     """
     filename = config['input_filename']
-    catalog = Table.read(filename)
+    
+    if filename[-5:]=='.hdf5':
+        catalog = read_table_hdf5_fix(filename, 'metacal')
+    else:
+        catalog = Table.read(filename)
 
     # Computes calibrated shear
     catalog = add_metacal_shear(catalog)
@@ -135,7 +172,7 @@ def shear_map(config):
 
 
     filename = config['output_filename']
-    hdulist.writeto(filename)
+    hdulist.writeto(filename, overwrite=True)
 
 
 if __name__ == "__main__":

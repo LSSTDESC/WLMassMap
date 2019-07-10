@@ -32,7 +32,7 @@ def convergence_map(config):
     hdulist = fits.HDUList([phdu, exthdu])
 
     filename = config['output_filename']
-    hdulist.writeto(filename)
+    hdulist.writeto(filename, overwrite=True)
 
 if __name__ == "__main__":
 

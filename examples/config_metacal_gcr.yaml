@@ -1,0 +1,14 @@
+TXMetacalGCRInput:
+
+    cat_name: dc2_object_run1.2i_tract5063_with_metacal.yaml
+
+TXSelector:
+  T_cut: 0.1
+  s2n_cut: 0.1
+  delta_gamma: 0.01
+  zbin_edges: [0.0, 2.0]
+
+shearMapPipe:
+    center_ra: 53.08
+    center_dec: -27.68
+    pixel_size: 0.3
