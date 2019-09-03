@@ -14,23 +14,17 @@ import warnings
 
 oldprint = print
 
-noise_file = "./LBFGS-bar-truth.inoise_variance.npy"
-data_file = "./LBFGS-bar-truth.d.npy"
-
-
-inoise_variance = numpy.load(noise_file)
-data =  numpy.load(data_file)
-
 def flat_WF_map(gmap,nmap, BoxSize=10. ,smooth_scale=0.1,maxiter = 1000,fid_ps = Planck15,verbose = False):
     """
     Wiener Filter Map Making: As in Horowitz, Seljak, Aslanyan (2018)
 
     nmap : ndarray
-       Inverse variance map of the data. A noisemap with same shape as gamma map. 
+       Number density map for sources. Currently this script assumes the shape noise is constant
+       for all sources. This is used to estimate the inverse variance map.
     BoxSize : float
        Sidelength of box in Mpc; only square boxes work (it is likely easy to fix or just pad input)
     smooth_scale: float
-       Smoothing scale on reconstructed map to maintain numerical accuracy
+       Smoothing scale on reconstructed map to maintain numerical accuracy, this should be a very small number (<1).
     maxiter: int
        Maximum number of iterations for reconstruction
     fid_ps: function
@@ -61,7 +55,8 @@ def flat_WF_map(gmap,nmap, BoxSize=10. ,smooth_scale=0.1,maxiter = 1000,fid_ps =
         warnings.warn("This Wiener Filter implementation assumes periodic boundary conditions. There are non-zero boundary elements in the input shear maps; view results cautiously! Pad input if need be!" , UserWarning)
 
     ## Calling main function
-    bf_signal,bf_gamma = __flat_WF_map(gmap,nmap,BoxSize=BoxSize,smooth_scale=smooth_scale,maxiter=maxiter,fid_ps=fid_ps,verbose=verbose)
+    bf_signal,bf_gamma = __flat_WF_map(gmap,1/np.sqrt(nmap),BoxSize=BoxSize,
+        smooth_scale=smooth_scale,maxiter=maxiter,fid_ps=fid_ps,verbose=verbose)
 
     return bf_signal
 
@@ -77,11 +72,15 @@ def __flat_WF_map(gmap,nmap,BoxSize=10. ,smooth_scale=0.1,maxiter = 1000,fid_ps 
     except:
         powerspectrum = fid_ps
 
-    wn = pm.generate_whitenoise(556, unitary=True)
 
+    #using white noise map as initial starting point for optimization (is later applied with the transfer function 
+    #specified above)
+    wn = pm.generate_whitenoise(556, unitary=True)
     x = wn[...]
     x = numpy.stack([x.real, x.imag], -1)
 
+
+    #Parameters used by the forward model
     ForwardModelHyperParameters = dict(
                 powerspectrum=powerspectrum,
                 pm=pm,
@@ -98,9 +97,9 @@ def __flat_WF_map(gmap,nmap,BoxSize=10. ,smooth_scale=0.1,maxiter = 1000,fid_ps 
             ]
             )
 
-
-    problem.maxradius = 100
-    problem.initradus = 1
+    #parameters if using trust region optimization instead of LBFGS
+  #  problem.maxradius = 100
+  #  problem.initradus = 1
     problem.cg_rtol = 0.1
     problem.cg_maxiter= 10
 
@@ -109,7 +108,10 @@ def __flat_WF_map(gmap,nmap,BoxSize=10. ,smooth_scale=0.1,maxiter = 1000,fid_ps 
         print(state)
         #print("Time: ",time.time()-start_time)
 
+    #LBFGS parameters
+
     lbfgs = LBFGS(maxiter=maxiter, linesearch=exact, diag_update=pre_scaled_direct_bfgs)
+    
     if verbose:
         print('objective(truth) =', problem.f(x), 'expecting', pm.Nmesh.prod() * len(problem.residuals))
         x1 = lbfgs.minimize(problem, x * 0.001, monitor=monitor)
@@ -118,4 +120,5 @@ def __flat_WF_map(gmap,nmap,BoxSize=10. ,smooth_scale=0.1,maxiter = 1000,fid_ps 
 
     s_sol,fs_sol = problem.state(x1)
 
+    #returns kappa map, [best fit gmap1, bestfit gmap2]
     return np.fft.irfft2(s_sol*Nmesh*Nmesh),fs_sol

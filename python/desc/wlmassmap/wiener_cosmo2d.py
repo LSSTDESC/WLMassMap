@@ -16,32 +16,23 @@ class FastPMOperator:
         wn = fastpm.c2r(wnk)
         rholnk = fastpm.induce_correlation(wnk, powerspectrum, pm)
 
-
-
+        #smoothing kappa map by (hopefully) small number, matters less in high noise (low number density)
+        #regime, but in low noise regime will try to fit sharp edges with bad effect...
         rholnk = fastpm.apply_transfer(rholnk, smoothing(smooth_scale))
-      #  q = pm.generate_uniform_particle_grid()
-      #  layout = fastpm.decompose(q, pm)
 
-        #phi = fastpm.apply_transfer(rholnk, fastpm.fourier_space_laplace)
-#       rho = fastpm.c2r(rholnk)
-#        rho = linalg.add(rho, 1.0)
+        #calculating derivative elements of shear operator
         dx_c = fastpm.apply_transfer(rholnk, fourier_space_neg_gradient_lownoise(0,pm))
         dx2_c = fastpm.apply_transfer(dx_c, fourier_space_neg_gradient_lownoise(0,pm))
-
         dy_c = fastpm.apply_transfer(rholnk, fourier_space_neg_gradient_lownoise(1,pm))
         dy2_c = fastpm.apply_transfer(dy_c, fourier_space_neg_gradient_lownoise(1,pm))
-
         dxdy_c = fastpm.apply_transfer(dy_c, fourier_space_neg_gradient_lownoise(0,pm))
 
         g1_c = linalg.mul(dxdy_c,-2.0)
         g2_int = linalg.mul(dy2_c,-1.0)
         g2_c = linalg.add(dx2_c,g2_int)
 
-        g1_r = fastpm.c2r(g1_c)#g1_c)
-        g2_r =fastpm.c2r(g2_c)#g2_c)
-
-       # g1 = fastpm.readout(g1_r, q, layout)
-       # g2 = fastpm.readout(g2_r, q, layout)
+        g1_r = fastpm.c2r(g1_c)
+        g2_r =fastpm.c2r(g2_c)#
 
         inter = [g1_r,g2_r]
         fs = linalg.stack(inter,axis=-1)
@@ -75,7 +66,8 @@ class NLResidualOperator:
 
         return dict(y = r)
 
-@autooperator
+#Currently not used for anything, but could possibly be used instead of smoothing command (not tested)
+@autooperator 
 class SmoothedNLResidualOperator:
     ain = [('wn', '*'), ('s', '*'), ('fs', '*')]
     aout = [('y', '*')]
@@ -96,8 +88,10 @@ class LNResidualOperator:
     aout = [('y', '*')]
     def main(self, wn, s, fs):
         r = linalg.add(wn, 0)
-        #fac = linalg.pow(wn.Nmesh.prod(), -0.5)
-        fac = linalg.pow(1024*1024, -0.5)
+
+        #normalization for map-size
+        #should be restructured to elsewhere if one cares to get accurate absolute chi-squared value...
+        fac = linalg.pow(1024*1024, -0.5) 
 
         r = linalg.mul(r, fac)
         return dict(y = r)
