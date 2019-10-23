@@ -1,6 +1,6 @@
-TXMetacalGCRInput:
+TXGCRTwoCatalogInput:
 
-    cat_name: dc2_object_run1.2i_tract5063_with_metacal.yaml
+    cat_name: dc2_object_run2.1.1i_with_metacal.yaml
 
 TXSelector:
   T_cut: 0.1
@@ -9,6 +9,8 @@ TXSelector:
   zbin_edges: [0.0, 2.0]
 
 shearMapPipe:
-    center_ra: 53.08
-    center_dec: -27.68
-    pixel_size: 0.3
+    center_ra: 62.3
+    center_dec: -35.75
+    pixel_size: 0.5
+    nx: 800
+    ny: 800

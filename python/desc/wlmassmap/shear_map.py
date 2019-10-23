@@ -96,20 +96,23 @@ def read_table_hdf5_fix(filename, group):
     
     catalog = Table(catalog)
     
-    # check that the relevant fields are not nan
+    # check all fields are not nan
     mask = np.array([True]*len(catalog))
 
-    for key in ['mcal_'+g+h for g in ['g1_','g2_'] for h in ['1p','1m','2p','2m']]:
-        mask &= ~np.isnan(catalog[key])
+    for i in range(len(catalog.columns)):
+        mask &= ~np.isnan(catalog.columns[i])
+
+    print('Removing %i/%i=%.3f with nan values'%
+          (np.sum(~mask), len(catalog), np.sum(~mask)/len(catalog)))
 
     catalog = catalog[mask]
     
     # construct shear measurements in wlmm format
-    catalog['mcal_g_1p'] = np.stack([catalog['mcal_g1_1p'],catalog['mcal_g2_1p']], axis=1)
-    catalog['mcal_g_2p'] = np.stack([catalog['mcal_g1_2p'],catalog['mcal_g2_2p']], axis=1)
-    catalog['mcal_g_1m'] = np.stack([catalog['mcal_g1_1m'],catalog['mcal_g2_1m']], axis=1)
-    catalog['mcal_g_2m'] = np.stack([catalog['mcal_g1_2m'],catalog['mcal_g2_2m']], axis=1)
-    catalog['mcal_g'] = np.stack([catalog['mcal_g1'],catalog['mcal_g2']], axis=1)
+    catalog['mcal_g_1p'] = np.stack([catalog['mcal_g1_1p'],-catalog['mcal_g2_1p']], axis=1)
+    catalog['mcal_g_2p'] = np.stack([catalog['mcal_g1_2p'],-catalog['mcal_g2_2p']], axis=1)
+    catalog['mcal_g_1m'] = np.stack([catalog['mcal_g1_1m'],-catalog['mcal_g2_1m']], axis=1)
+    catalog['mcal_g_2m'] = np.stack([catalog['mcal_g1_2m'],-catalog['mcal_g2_2m']], axis=1)
+    catalog['mcal_g'] = np.stack([catalog['mcal_g1'],-catalog['mcal_g2']], axis=1)
     
     f.close()
     

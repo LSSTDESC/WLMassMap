@@ -3,7 +3,7 @@ launcher: local
 modules: txpipe mmpipe
 
 stages:
-    - name: TXMetacalGCRInput
+    - name: TXGCRTwoCatalogInput
       nprocess: 1
     - name: TXSelector
       nprocess: 1
@@ -17,7 +17,7 @@ inputs:
     
 output_dir: ./workspace/outputs
 
-config: ./examples/config_metacal_gcr.yaml
-resume: False
+config: ./WLMassMap/examples/config_metacal_gcr.yaml
+resume: True
 log_dir: ./workspace/logs
 pipeline_log: ./workspace/log.txt
