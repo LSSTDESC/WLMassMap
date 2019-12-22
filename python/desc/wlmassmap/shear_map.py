@@ -82,6 +82,7 @@ def bin_shear_map(catalog, nx=None, ny=None, npix=None):
 
     return gmap, Nmap
 
+
 import h5py
 def read_table_hdf5_fix(filename, group):
     f = h5py.File(filename,'r')
@@ -96,23 +97,22 @@ def read_table_hdf5_fix(filename, group):
     
     catalog = Table(catalog)
     
-    # check all fields are not nan
-    mask = np.array([True]*len(catalog))
+#     # check all fields are not nan
+#     mask = np.array([True]*len(catalog))
 
-    for i in range(len(catalog.columns)):
-        mask &= ~np.isnan(catalog.columns[i])
+#     for i in range(len(catalog.columns)):
+#         mask &= ~np.isnan(catalog.columns[i])
 
-    print('Removing %i/%i=%.3f with nan values'%
-          (np.sum(~mask), len(catalog), np.sum(~mask)/len(catalog)))
-
-    catalog = catalog[mask]
+#     print('Removing %i/%i=%.3f with nan values'%
+#           (np.sum(~mask), len(catalog), np.sum(~mask)/len(catalog)))
+#     catalog = catalog[mask]
     
     # construct shear measurements in wlmm format
-    catalog['mcal_g_1p'] = np.stack([catalog['mcal_g1_1p'],-catalog['mcal_g2_1p']], axis=1)
-    catalog['mcal_g_2p'] = np.stack([catalog['mcal_g1_2p'],-catalog['mcal_g2_2p']], axis=1)
-    catalog['mcal_g_1m'] = np.stack([catalog['mcal_g1_1m'],-catalog['mcal_g2_1m']], axis=1)
-    catalog['mcal_g_2m'] = np.stack([catalog['mcal_g1_2m'],-catalog['mcal_g2_2m']], axis=1)
-    catalog['mcal_g'] = np.stack([catalog['mcal_g1'],-catalog['mcal_g2']], axis=1)
+    catalog['mcal_g_1p'] = np.stack([catalog['mcal_g1_1p'],catalog['mcal_g2_1p']], axis=1)
+    catalog['mcal_g_2p'] = np.stack([catalog['mcal_g1_2p'],catalog['mcal_g2_2p']], axis=1)
+    catalog['mcal_g_1m'] = np.stack([catalog['mcal_g1_1m'],catalog['mcal_g2_1m']], axis=1)
+    catalog['mcal_g_2m'] = np.stack([catalog['mcal_g1_2m'],catalog['mcal_g2_2m']], axis=1)
+    catalog['mcal_g'] = np.stack([catalog['mcal_g1'],catalog['mcal_g2']], axis=1)
     
     f.close()
     
