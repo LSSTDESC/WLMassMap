@@ -9,6 +9,8 @@ from .projection import project_flat, project_healpix
 from astropy.table import Table
 from astropy.io import fits
 import healpy as hp
+import h5py
+
 
 def add_metacal_shear(catalog, delta_gamma=0.01):
     """
@@ -83,40 +85,50 @@ def bin_shear_map(catalog, nx=None, ny=None, npix=None):
     return gmap, Nmap
 
 
-import h5py
-def read_table_hdf5_fix(filename, group):
+def read_table_from_hdf5(filename, group, key_list):
+    """
+    Reads specified fields from an hdf5 file. Outputs an astropy Table.
+    """
+    
     f = h5py.File(filename,'r')
     g = f[group]
     
-    # load each dataset as a separate column in astropy Tablee
-    dtype_list = [(key, g[key].dtype) for key in g.keys()]
-    catalog = np.empty(g['ra'].shape, dtype=dtype_list)
+    dtype_list = [(key, g[key].dtype) for key in key_list]
+    catalog = np.empty(g[key_list[0]].shape, dtype=dtype_list)
 
-    for key in g.keys():
+    for key in key_list:
         catalog[key] = g[key]
     
     catalog = Table(catalog)
     
-#     # check all fields are not nan
-#     mask = np.array([True]*len(catalog))
-
-#     for i in range(len(catalog.columns)):
-#         mask &= ~np.isnan(catalog.columns[i])
-
-#     print('Removing %i/%i=%.3f with nan values'%
-#           (np.sum(~mask), len(catalog), np.sum(~mask)/len(catalog)))
-#     catalog = catalog[mask]
+    f.close()
     
-    # construct shear measurements in wlmm format
+    return catalog
+
+def stack_shear_catalog(catalog):
+    """
+    Stacks shear measurements into length-2 vectors. Primarily used to convert TXPipe
+    shear datatypes to WLMassMap shear datatype.
+    """
+    
     catalog['mcal_g_1p'] = np.stack([catalog['mcal_g1_1p'],catalog['mcal_g2_1p']], axis=1)
     catalog['mcal_g_2p'] = np.stack([catalog['mcal_g1_2p'],catalog['mcal_g2_2p']], axis=1)
     catalog['mcal_g_1m'] = np.stack([catalog['mcal_g1_1m'],catalog['mcal_g2_1m']], axis=1)
     catalog['mcal_g_2m'] = np.stack([catalog['mcal_g1_2m'],catalog['mcal_g2_2m']], axis=1)
     catalog['mcal_g'] = np.stack([catalog['mcal_g1'],catalog['mcal_g2']], axis=1)
     
-    f.close()
-    
     return catalog
+
+def metacal_variants(*names):
+    """
+    Utility function for tabulating the metacal fields used by TXPipe.
+    Copied from TXPipe.utils.metacal
+    """
+    return [
+        name + suffix
+        for suffix in ['', '_1p', '_1m', '_2p', '_2m']
+        for name in names
+    ]
 
 def shear_map(config):
     """
@@ -127,35 +139,50 @@ def shear_map(config):
         config: dictionary
             Configuration dictionary read from yaml config file
     """
-    filename = config['input_filename']
+    shear_filename = config['shear_catalog_input']
+    tomography_filename = config['tomography_catalog_input']
     
-    if filename[-5:]=='.hdf5':
-        catalog = read_table_hdf5_fix(filename, 'metacal')
+    # Load shear catalog
+    if shear_filename[-5:]=='.hdf5':
+        shear_catalog = read_table_from_hdf5(shear_filename, 'metacal',
+                                             ['ra', 'dec'] + metacal_variants('mcal_g1', 'mcal_g2'))
+        shear_catalog = stack_shear_catalog(shear_catalog)
     else:
-        catalog = Table.read(filename)
+        shear_catalog = Table.read(shear_filename)
 
+    # Load tomography catalog
+    if tomography_filename[-5:]=='.hdf5':
+        tomography_catalog = read_table_from_hdf5(tomography_filename, 'tomography',
+                                                  ['source_bin', 'lens_bin'])
+    else:
+        tomography_catalog = Table.read(tomography_filename)
+
+    # Perform selection cuts
+    shear_catalog = shear_catalog[tomography_catalog['source_bin'] >= 0]
+    tomography_catalog = tomography_catalog[tomography_catalog['source_bin'] >= 0]
+    
     # Computes calibrated shear
-    catalog = add_metacal_shear(catalog)
+    shear_catalog = add_metacal_shear(shear_catalog)
 
     # Extracts projection configuration
     c = config['projection']
     projection2d = False
 
-    # Applies projection to catalog
+    # Applies projection to shear catalog
     if c['type'] in ['gnomonic']: # Any 2D flat projection
         projection2d =True
 
-        catalog, grid_ra, grid_dec = project_flat(catalog, c['nx'], c['ny'],
-                    c['pixel_size'], c['center_ra'], c['center_dec'], c['type'])
+        shear_catalog, grid_ra, grid_dec = project_flat(shear_catalog, c['nx'], c['ny'],
+                c['pixel_size'], c['center_ra'], c['center_dec'], c['type'])
 
-        # Bins the projected catalog
-        gmap, nmap = bin_shear_map(catalog, nx=c['nx'], ny=c['ny'])
+        # Bins the projected shear catalog
+        gmap, nmap = bin_shear_map(shear_catalog, nx=c['nx'], ny=c['ny'])
 
     elif c['type'] == 'healpix': # Any spherical projection
-        catalog = project_healpix(catalog, nside=c['nside'])
+        shear_catalog = project_healpix(shear_catalog, nside=c['nside'])
 
-        # Bins the projected catalog
-        gmap, nmap = bin_shear_map(catalog, npix=hp.nside2npix(c['nside']))
+        # Bins the projected shear catalog
+        gmap, nmap = bin_shear_map(shear_catalog, npix=hp.nside2npix(c['nside']))
     else:
         raise NotImplementedError
 

@@ -55,7 +55,8 @@ class shearMapPipe(PipelineStage):
 
     def run(self):
         config = self.read_config(defaultdict(lambda :None))
-        config['input_filename'] = self.get_input('shear_catalog')
+        config['shear_catalog_input'] = self.get_input('shear_catalog')
+        config['tomography_catalog_input'] = self.get_input('tomography_catalog')
         config['output_filename'] = self.get_output('shear_map')
         config['projection'] = {'type':'gnomonic',
                                 'center_ra':config['center_ra'],
