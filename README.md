@@ -1,5 +1,6 @@
 # The WLMassMap package
 
+This code is under development and has not yet been released.
 
 ## Code set-up and testing
 
