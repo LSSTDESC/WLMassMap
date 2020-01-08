@@ -43,8 +43,7 @@ class mockShearMeasurementPipe(PipelineStage):
 
 class shearMapPipe(PipelineStage):
     name = 'shearMapPipe'
-    inputs = [('shear_catalog', MetacalCatalog),
-              ('tomography_catalog', TomographyCatalog)]
+    inputs = [('shear_catalog', MetacalCatalog)]
     outputs = [('shear_map', FitsFile)]
     config_options = {'center_ra':float,
                       'center_dec':float,
