@@ -1,22 +1,12 @@
 # The WLMassMap package
 
-**Goal:** Generate lensing mass map(s) from [Hyper Suprime-Cam (HSC)](http://www.naoj.org/Projects/HSC/) publicly released image data.
-
-## Project activities
-
-1. Use LSST Data Management (DM) to process HSC images to galaxy shape catalogs.
-2. Use shape catalogs that we compute, and/or those available elsewhere, to produce projected mass maps from weak lensing shear.
-3. Compare and validate mass mapping algorithms in conjunction with lensing mocks from DESC.
-
-While we expect exciting mass map results from this project, a primary aim is to build key components of DESC weak lensing expertise and team that will be needed for LSST initial data analysis. 
-
-See the [Issues](https://github.com/LSSTDESC/WLMassMap/issues) and [Milestones](https://github.com/LSSTDESC/WLMassMap/milestones) pages for further details on project activities.
+This code is under development and has not yet been released.
 
 ## Code set-up and testing
 
 Checking out the code:
 ```
- $ git clone git@github.com:LSSTDESC/WLMassMap.git
+ $ git clone https://github.com/LSSTDESC/WLMassMap.git
 ```
 
 Or, install code and dependencies with pip:
@@ -24,49 +14,13 @@ Or, install code and dependencies with pip:
 $ pip install --user git+git://github.com/LSSTDESC/WLMassMap.git
 ```
 
-See [examples](https://github.com/LSSTDESC/WLMassMap/tree/master/examples) for instructions on how to use the code
+See [examples](https://github.com/LSSTDESC/WLMassMap/tree/master/examples) for instructions on how to use the code. The following command produces a mass-map
+from the protoDC2 simulation available at NERSC through the [GCR](https://github.com/LSSTDESC/gcr-catalogs):
+```
+$ cd examples; ceci ceci_pipeline.yml
+```
 
 
-## Mocks
+## License
 
-See the doc/mocks directory for info on available mocks.
-
-## HSC Data
-
-Erin put an example HSC MEDS file here:
-
-http://www.cosmo.bnl.gov/www/esheldon/hsc-meds-examples/
-
-and it has been copied here on NERSC:
-
-/project/projectdirs/lsst/desc-wl/wl-massmap/hsc/test-file/test-segrad5.fits.fz
-
-
-to read it, install fitsio if you don't have it already
-
-pip install fitsio
-Also install the meds reader. The meds library isn't in pip, so git clone it and install.
-https://github.com/esheldon/meds
-
-python setup.py install
-
-
-## People
-
-* Jim Bosch
-* Domique Boutigny
-* Alan Heavens
-* Rachel Mandelbaum
-* Josh Meyers
-* Javier Sanchez
-* Michael Schneider
-* Erin Sheldon
-* Anze Slosar
-* Joe Zuntz
-
-## Demo
-
-
-## License, etc.
-
-This is open source software, available under the BSD license. If you are interested in this project, please do drop us a line via the hyperlinked contact names above, or by [writing us an issue](https://github.com/DarkEnergyScienceCollaboration/WLMassMap/issues/new).
+This is open source software, available under the BSD license. If you are interested in this project, please do contact us by  [writing us an issue](https://github.com/LSSTDESC/WLMassMap/issues/new).

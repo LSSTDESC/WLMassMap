@@ -36,3 +36,12 @@ $ python -m desc.wlmassmap.convergence_map config.yaml
 ```
 
 Check the [configuration file](config_map.yaml) to see the kind of options that can be set.
+
+## Running these stages as a Ceci pipeline
+
+Provided that `ceci` is intalled (see [here](https://github.com/LSSTDESC/ceci)),
+the steps detailed in the previous section can be automated and ran as a single
+pipeline:
+```
+$ ceci ceci_pipeline.yml
+```

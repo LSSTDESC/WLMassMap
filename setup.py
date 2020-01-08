@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 Weak lensing mass-mapping pipeline for LSST DESC
-Copyright (c) 2017 LSST DESC
+Copyright (c) 2020 LSST DESC
 http://opensource.org/licenses/MIT
 """
 from setuptools import setup
@@ -22,6 +22,6 @@ setup(
         'Programming Language :: Python :: 3.6',
     ],
     package_dir={'': 'python'},
-    packages=['desc.wlmassmap', 'desc.wlmassmap.mocks'],
-    install_requires=['numpy','h5py','astropy','healpy','GCR']
+    packages=['desc.wlmassmap', 'desc.wlmassmap.mocks', 'mmpipe'],
+    install_requires=['numpy','h5py','astropy','healpy','GCR', 'ceci', 'descformats']
 )

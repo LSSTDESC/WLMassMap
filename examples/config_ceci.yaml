@@ -1,0 +1,20 @@
+extractFootprintPipe:
+    catalog: protoDC2
+    ra_range:  [0, 5]
+    dec_range: [0, 5]
+
+mockShearMeasurementPipe:
+    reduced_shear: false
+    sigma_noise: 0.13
+    delta_gamma: 0.01
+
+shearMapPipe:
+    center_ra: 2.5  # In deg
+    center_dec: 2.5 # In deg
+    pixel_size: 1 # In arcmin
+    nx: 300
+    ny: 300
+
+convergenceMapPipe:
+    smoothing: 1 # Gaussian smoothing in arcmin
+    zero_padding: 128 # Size of the zero_padding region for inversion

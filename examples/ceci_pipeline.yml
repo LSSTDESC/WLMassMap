@@ -1,0 +1,23 @@
+launcher: cori-interactive
+
+modules: mmpipe
+
+stages:
+    - name: extractFootprintPipe
+      nprocess: 1
+    - name: mockShearMeasurementPipe
+      nprocess: 1
+    - name: shearMapPipe
+      nprocess: 1
+    - name: convergenceMapPipe
+      nprocess: 1
+
+output_dir: ./outputs
+
+inputs:
+    config: ./config_ceci.yaml
+
+config: ./config_ceci.yaml
+resume: True
+log_dir: ./test/logs
+pipeline_log: log.txt
