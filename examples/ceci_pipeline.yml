@@ -1,15 +1,11 @@
 launcher: cori-interactive
 
-modules: mmpipe txpipe
+modules: mmpipe
 
 stages:
     - name: extractFootprintPipe
       nprocess: 1
     - name: mockShearMeasurementPipe
-      nprocess: 1
-    - name: TXSelector
-      nprocess: 1
-    - name: TXPhotozPDF
       nprocess: 1
     - name: shearMapPipe
       nprocess: 1
