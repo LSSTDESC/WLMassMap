@@ -17,7 +17,7 @@ $ pip install --user git+git://github.com/LSSTDESC/WLMassMap.git
 See [examples](https://github.com/LSSTDESC/WLMassMap/tree/master/examples) for instructions on how to use the code. The following command produces a mass-map
 from the protoDC2 simulation available at NERSC through the [GCR](https://github.com/LSSTDESC/gcr-catalogs):
 ```
-$ cd examples; ceci ceci_pipeline.yaml
+$ cd examples; ceci ceci_pipeline.yml
 ```
 
 

@@ -15,7 +15,9 @@ stages:
 output_dir: ./outputs
 
 inputs:
-    config: configs/config.yml
+    config: ./config_ceci.yaml
+
+config: ./config_ceci.yaml
 resume: True
 log_dir: ./test/logs
 pipeline_log: log.txt
