@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 Weak lensing mass-mapping pipeline for LSST DESC
-Copyright (c) 2019 LSST DESC
+Copyright (c) 2020 LSST DESC
 http://opensource.org/licenses/MIT
 """
 from setuptools import setup
