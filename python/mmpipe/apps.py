@@ -112,6 +112,7 @@ class TXConvergenceMaps(PipelineStage):
         else:
             raise NotImplementedError
 
+        # TODO: export the maps as DiagnosticMaps
 
     def load_maps():
         import healpy
