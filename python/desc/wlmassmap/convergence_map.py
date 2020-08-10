@@ -4,7 +4,7 @@ import os
 import yaml
 import numpy as np
 from astropy.io import fits
-
+from .wiener import flat_WF_map
 from .kaiser_squires import flat_KS_map, healpix_KS_map
 
 def convergence_map(config):
@@ -20,6 +20,8 @@ def convergence_map(config):
 
     if c['name'] == 'flat_ks':
         kappa_e, kappa_b = flat_KS_map(gmap)
+    elif c['name'] == 'flat_wf':
+        kappa_e, _ = flat_WF_map(gmap, nmap)
 
     elif c['name'] == 'healpix_ks':
         kappa_e, kappa_b = healpix_KS_map(gmap, lmax=c['lmax'])
