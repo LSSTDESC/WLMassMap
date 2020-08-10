@@ -57,6 +57,6 @@ def healpix_KS_map(gmap, lmax=None, sigma=None):
     almsE[ell==1] = 0.0
     almsB[ell==1] = 0.0
 
-    E_map = hp.alm2map(almsE, nside=nside, lmax=lmax, pol=False, sigma=sigma)
-    B_map = hp.alm2map(almsB, nside=nside, lmax=lmax, pol=False, sigma=sigma)
+    E_map = hp.alm2map(almsE, nside=nside, lmax=lmax, pol=False, sigma=sigma, verbose=False)
+    B_map = hp.alm2map(almsB, nside=nside, lmax=lmax, pol=False, sigma=sigma, verbose=False)
     return E_map, B_map
