@@ -1,8 +1,9 @@
 # This module handles the projection of a catalog on a specific grid
 import numpy as np
 from scipy.stats import binned_statistic_2d
-from .projection_utils import radec2xy, xy2radec, eq2ang
+from projection_utils import radec2xy, xy2radec, eq2ang
 import healpy as hp
+import pyssht as ssht
 
 def project_healpix(catalog, nside, hp_type='RING'):
     """
@@ -27,6 +28,44 @@ def project_healpix(catalog, nside, hp_type='RING'):
     theta, phi = eq2ang(catalog['ra'], catalog['dec'])
     catalog['pixel_index'] = hp.ang2pix(nside, theta, phi,
                                         nest=(hp_type=='NESTED'))
+    return catalog
+
+def project_ssht_mw(catalog, L):
+    """
+    Adds a MW pixel index to all galaxies in the catalog based on
+    ind = theta * n_phi + phi
+
+    Parameters
+    ----------
+    catalog: table
+        Input shape catalog
+
+    L: int
+        MW band limit parameter
+
+    Method: string
+        SSHT binning method
+
+    Returns
+    -------
+    catalog: table
+        Output shape catalog with pixel index column
+    """
+    theta, phi=ssht.ra_dec_to_theta_phi(catalog['ra'],catalog['dec'],Degrees=True)
+    # Account for negative values of phi
+    phi = (phi + 2.*np.pi) % (2.*np.pi)
+
+    # Computes theta and phi index for the MW grid
+    # based on https://github.com/astro-informatics/ssht/blob/ed3d64fb3d34c6773712dec7c5007a5f3a03d560/src/python/pyssht.pyx#L690
+    # But with a much faster/convenient numpy implementation
+    t = ((theta*(2*L-1)/np.pi-1)/2).astype('int64')
+    p = (phi*(2*L-1)/(2*np.pi)).astype('int64')
+    n_theta, n_phi = ssht.sample_shape(L, Method="MW")
+
+    pixel_index = t*n_phi + p
+
+    catalog['pixel_index'] = pixel_index
+
     return catalog
 
 def project_flat(catalog, nx, ny, pixel_size, center_ra, center_dec, projection='gnomonic'):
